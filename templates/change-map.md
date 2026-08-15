@@ -6,11 +6,16 @@
 * **Risk level:**
 * **Requirement contract:** (link)
 
+Do not record secrets, tokens, credentials, private keys, or sensitive payload
+contents in VAD artifacts. Record references or identifiers instead when needed.
+
 ## Summary
 
 One short paragraph: what changed and why.
 
 ## File map
+
+The file map is the change-provenance record (what changed, why, risk, verification).
 
 | File | Change | Reason | Risk | Verification |
 | ---- | ------ | ------ | ---- | ------------ |
@@ -28,19 +33,21 @@ Schema, feature flags, config, client versions.
 
 Logging, metrics, alerts, quotas, cost.
 
-## Change provenance
-
-What changed, why, requirement link, risk, and how verification will be shown.
-
-(The file map above is the primary change-provenance record.)
-
 ## Instruction Provenance
 
-Persistent AI instructions such as `AGENTS.md`, `CLAUDE.md`, system prompts,
-and repository rules used or changed by this work. Treat these as maintainable
-software artifacts rather than permanent accumulated memory.
+Complete this section only if this change **relied on or modified** persistent
+AI instructions. **N/A is acceptable otherwise.** Complete only when applicable
+by risk or scope.
 
-Record the reason for every meaningful instruction.
+Persistent instructions include `AGENTS.md`, `CLAUDE.md`, repository
+instructions, persistent system prompts, and persistent agent rules.
+
+Temporary conversational prompts are out of scope.
+
+Record the reason for every meaningful persistent instruction that this change
+relied on or modified. Do not copy or document every existing instruction file
+simply because it exists. Treat these as maintainable software artifacts rather
+than permanent accumulated memory.
 
 | Rule | Why it exists | Failure / risk it prevents | Introduced | Scope | Remove when |
 | ---- | ------------- | -------------------------- | ---------- | ----- | ----------- |
@@ -56,8 +63,9 @@ If an agent ran, complete the Agent Execution Evidence block in the
 input to verification and accountability). Record a pointer here:
 
 - Agent execution evidence: (link or N/A — no agent)
-- Rollback owner:
+- Accountable / rollback owner: see Verification Report → Approval
 
 ## Rollback plan
 
-Steps to disable or revert.
+Steps to disable or revert. Name of owner-of-record: see Verification Report →
+Approval (do not create a second owner-of-record here).
