@@ -28,6 +28,13 @@ Schema, feature flags, config, client versions.
 
 Logging, metrics, alerts, quotas, cost.
 
+## Instruction provenance
+
+* Source (issue / chat / agent task / amended by):
+* Human approver of the instruction:
+* Prompt or task id (no secrets):
+* Agent used (if any):
+
 ## Rollback plan
 
 Steps to disable or revert.

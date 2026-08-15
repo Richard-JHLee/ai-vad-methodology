@@ -17,3 +17,16 @@
 
 Ambiguous terms should be defined in the requirement contract for a given project
 rather than assumed from AI chat history.
+
+## v0.2 evidence terms (proposed)
+
+These do not add a seventh core property. See
+[RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).
+
+| Term | Meaning |
+| ---- | ------- |
+| **Requirement Ambiguity / Clarification** | Unclear, conflicting, or missing requirement detail, and the record of questions asked plus answers received before generation. |
+| **Instruction Provenance** | The origin of the instruction that authorized a change (issue, human prompt, agent task, amended instruction) and who approved it. |
+| **Agent Execution Evidence** | Trace of agent actions: tools, targets, results, and stop or error events. |
+| **Verification Cost** | Effort, tools, and coverage spent on verification, judged against risk. |
+| **Performance Evidence** | Measured performance outcome with baseline, after value, environment, and source—not a checkbox alone. |

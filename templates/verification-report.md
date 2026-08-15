@@ -39,6 +39,9 @@ Related flows / APIs / jobs rechecked:
 | Rollback / feature flag | | |
 | Migration safety | | |
 
+A checkbox is not performance evidence. When performance, capacity, or
+infrastructure cost is in scope, complete section 9.
+
 ## 5. AI-generated tests
 
 List AI-written tests and what was independently reviewed or supplemented.
@@ -55,3 +58,26 @@ Environments, flags, progressive rollout plan.
 
 * Technical approver:
 * (Critical) Independent reviewer:
+
+## 9. Performance evidence
+
+Record when performance, capacity, or infrastructure cost is in scope.
+
+| Metric | Baseline | After | Environment | Source |
+| ------ | -------- | ----- | ----------- | ------ |
+|        |          |       |             |        |
+
+## 10. Verification cost
+
+| Activity | Effort | Coverage | Justified by risk? |
+| -------- | ------ | -------- | ------------------ |
+|          |        |          |                    |
+
+## 11. Agent execution evidence (if applicable)
+
+When an agent ran, this trace is a verification *input*, not a verification
+*result*. Omit if no agent executed the change.
+
+| Step | Tool | Target | Result | Stop/error |
+| ---- | ---- | ------ | ------ | ---------- |
+|      |      |        |        |            |

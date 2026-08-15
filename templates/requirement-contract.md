@@ -52,3 +52,14 @@ How do we disable or reverse this if it misbehaves?
 ## 11. Explicit non-goals
 
 What will this change **not** do?
+
+## 12. Ambiguity and clarification
+
+| Ambiguity | Question | Clarification | Remaining unknown | Blocking? |
+| --------- | -------- | ------------- | ----------------- | --------- |
+|           |          |               |                   |           |
+
+Unresolved blocking ambiguity is a stop condition. Do not generate code until
+it is resolved or explicitly accepted as residual risk. Depth scales by
+[risk level](../docs/risk-levels.md). See
+[RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).

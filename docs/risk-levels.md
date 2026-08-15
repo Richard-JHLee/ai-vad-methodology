@@ -27,3 +27,18 @@ relax process for later low-risk iterations once the blast radius is known.
 * Treating every typo fix as Critical (process fatigue).
 * Treating payment or auth changes as Low because “tests passed”.
 * Skipping recovery planning because rollback “should be easy”.
+
+## v0.2 evidence depth by risk
+
+The six core properties and seven stages are unchanged. Evidence depth scales
+with risk. See [RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).
+
+| Evidence | Low | Medium | High / Critical |
+| -------- | --- | ------ | --------------- |
+| Requirement ambiguity / clarification | Optional one-liner | Record if AI-assisted | Required; blocking questions must be resolved |
+| Instruction provenance | Optional | Required if AI-assisted | Required |
+| Agent execution evidence | If an agent ran | If an agent ran | Required whenever an agent ran |
+| Verification cost | Skip or one line | Brief | Required; justify coverage vs risk |
+| Performance evidence | Only if performance is in scope | If performance is in scope | Required when performance, cost, or capacity is in scope |
+
+Expensive ceremony is not the goal. Missing evidence on a high-risk change is.

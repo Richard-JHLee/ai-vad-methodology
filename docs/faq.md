@@ -8,7 +8,9 @@ academic, or certified framework.
 ## Does VAD ban AI agents?
 
 No. VAD assumes AI will be used and focuses on keeping changes explainable and
-recoverable.
+recoverable. When an agent executes a change, keep agent execution evidence
+(tools, targets, results, stop events). See
+[RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).
 
 ## Do I need every artifact for every PR?
 
@@ -42,3 +44,19 @@ No. It complements them when AI increases change speed and volume.
 
 Yes, under [CC-BY-4.0](../LICENSE). Please attribute the project and note
 modifications.
+
+## What if the requirement is ambiguous?
+
+Treat unresolved blocking ambiguity as a stop condition. Record the question,
+the clarification, and remaining unknowns in the Requirement Contract before
+generating code.
+
+## Does more verification always mean better VAD?
+
+No. Record verification cost against risk. Large effort on low-risk work is
+waste; thin evidence on high-risk work is the defect.
+
+## Is a performance checkbox enough?
+
+No. When performance is in scope, record performance evidence: baseline, after,
+environment, and source.
