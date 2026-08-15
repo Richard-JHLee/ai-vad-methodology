@@ -19,9 +19,19 @@ they do not add an eighth stage.
 Define expected behavior before generation: purpose, inputs/outputs, roles,
 failure conditions, data rules, security, performance, and recovery.
 
-Record requirement ambiguity: open questions, clarifications received, remaining
-unknowns, and whether any question blocks generation. Unresolved blocking
-ambiguity is a stop condition.
+Inside this stage (not a new top-level stage):
+
+```text
+Requirement Definition
+  → Ambiguity Detection
+  → Requirement Clarification
+  → Acceptance Criteria
+  → Implementation
+```
+
+Record requirement ambiguity: known ambiguities, missing information,
+assumptions, questions requiring human clarification, and implicit
+requirements discovered. Unresolved blocking ambiguity is a stop condition.
 
 **Key question:** What exactly should happen, and when should it fail?
 
@@ -52,35 +62,64 @@ AI implements only the approved requirement and scope. Before coding, it should
 state planned files, non-goals, assumptions, risks, and tests. Developers review
 that plan before accepting implementation.
 
-Record instruction provenance (issue, prompt, agent task, or human amendment).
-If an agent executes the work, retain an execution trace of tools, files
-touched, and stop or error events. These records are verification inputs, not
-verification results.
+Persistent AI instructions relied on during generation (`AGENTS.md`,
+`CLAUDE.md`, system prompts, repository rules) should carry **instruction
+provenance**. If an agent executes the work, produce **agent execution
+evidence** as the work happens. That evidence is cross-stage: it records what
+executed the change. It is not a verification result and not an eighth stage.
 
 ## 5. Change Mapping
 
-Produce a change map: what changed, why, requirement link, risks, how it was
-verified, and instruction provenance.
+Produce a change map covering:
+
+* **change provenance** — what changed, why, requirement link, risks, how it
+  was verified,
+* **instruction provenance** — persistent AI instructions used or changed,
+* **a pointer to agent execution evidence** when an agent ran.
 
 Artifact: [change-map.md](../templates/change-map.md)
 
 ## 6. Automated and Human Verification
 
-Verify in layers:
+Verify in layers. These layers are verification results:
 
-* static (compile, lint, secrets, unsafe APIs),
-* functional (behavior, permissions, boundaries),
-* regression (related flows still work),
-* operational (logs, monitors, rollback readiness).
+* correctness (static and functional),
+* security,
+* regression,
+* performance evidence,
+* operational cost,
+* verification cost.
 
-When performance, capacity, or infrastructure cost is in scope, attach
-performance evidence (baseline, after, environment, source). Record
-verification cost (effort, tools, coverage) relative to risk. Attach agent
-execution evidence when an agent performed the change.
+**Performance evidence:** for performance-sensitive changes, record measurable
+runtime impact (CPU, memory, queries, allocations, latency, external API
+calls, infrastructure cost). Passing functional tests does not prove that
+generated code is operationally efficient.
+
+**Verification cost:** evaluate not only whether a change is correct, but also
+how expensive it is to verify. AI-assisted productivity must be evaluated
+across the full change lifecycle, not only at the point of code generation.
+A change is not necessarily more productive if faster generation creates
+disproportionate review, verification, or operational cost. Depth scales by
+[risk level](./risk-levels.md); Low-risk work is not required to fill every
+field.
 
 **Key principle:** AI-generated tests are inputs, not final results.
 
 Artifact: [verification-report.md](../templates/verification-report.md)
+
+## Agent execution evidence (cross-stage)
+
+Not a workflow stage. Not a verification result.
+
+Agent execution evidence is produced during agent execution and referenced by
+both the Change Map (pointer) and the Verification Report (detail). It records
+what executed the change: initiating human, agent/model, delegated agents,
+tools, MCP servers, permissions, external systems, generated artifacts,
+verification results used as inputs, human approvals, execution cost, and
+rollback owner.
+
+It serves as **input** to verification and accountability (Traceable,
+Accountable). Depth: only when an agent ran.
 
 ## 7. Progressive Deployment
 
@@ -89,6 +128,9 @@ Passing tests is not production safety. Roll out by risk:
 ```text
 Local → Development → Internal users → Limited production → Broader release
 ```
+
+Observe and recover here: health metrics, error-rate thresholds, automatic
+rollback, and named owners. This is Recoverable, not an eighth stage.
 
 **Key question:** Can this change be stopped or reversed before it affects every user?
 

@@ -18,15 +18,23 @@
 Ambiguous terms should be defined in the requirement contract for a given project
 rather than assumed from AI chat history.
 
-## v0.2 evidence terms (proposed)
+## v0.2 reading of existing properties
 
-These do not add a seventh core property. See
-[RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).
+These are stronger definitions of three existing properties. They do not add a
+seventh core property. See [RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).
+
+| Property | v0.2 reading |
+| -------- | ------------ |
+| **Traceable** | Change provenance, instruction provenance, and agent execution evidence. |
+| **Verifiable** | Correctness, security, regression, performance evidence, operational cost, and verification cost. |
+| **Accountable** | Human approval, execution ownership, and rollback ownership. |
+
+## v0.2 evidence terms (proposed)
 
 | Term | Meaning |
 | ---- | ------- |
-| **Requirement Ambiguity / Clarification** | Unclear, conflicting, or missing requirement detail, and the record of questions asked plus answers received before generation. |
-| **Instruction Provenance** | The origin of the instruction that authorized a change (issue, human prompt, agent task, amended instruction) and who approved it. |
-| **Agent Execution Evidence** | Trace of agent actions: tools, targets, results, and stop or error events. |
-| **Verification Cost** | Effort, tools, and coverage spent on verification, judged against risk. |
-| **Performance Evidence** | Measured performance outcome with baseline, after value, environment, and source—not a checkbox alone. |
+| **Requirement Ambiguity / Clarification** | Known ambiguities, missing information, assumptions, questions for humans, and implicit requirements captured inside Stage 1 before generation. |
+| **Instruction Provenance** | Record for a persistent AI instruction (`AGENTS.md`, `CLAUDE.md`, system prompt, repository rule): the rule, why it exists, the failure or risk it prevents, when it was introduced, its scope, and when it may be removed. Instructions are maintainable artifacts, not accumulated memory. |
+| **Agent Execution Evidence** | Cross-stage record of what executed the change (human, agent/model, tools, MCP servers, permissions, artifacts, approvals, cost, ownership). Produced during agent execution. Referenced by the Change Map and the Verification Report. Input to verification and accountability. **Not** a verification result and **not** an eighth workflow stage. |
+| **Verification Cost** | How expensive a change is to verify across the full lifecycle (review iterations, comments, time to merge, tests, static analysis, human effort, unresolved uncertainty), judged against risk. Not mandatory field-by-field on Low-risk work. |
+| **Performance Evidence** | Measured runtime and operational-cost impact (CPU, memory, queries, allocations, latency, external API calls, infrastructure cost)—not a checkbox alone. |

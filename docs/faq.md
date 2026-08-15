@@ -9,7 +9,8 @@ academic, or certified framework.
 
 No. VAD assumes AI will be used and focuses on keeping changes explainable and
 recoverable. When an agent executes a change, keep agent execution evidence
-(tools, targets, results, stop events). See
+(what ran, tools, MCP servers, permissions, approvals, cost, ownership). That
+record is cross-stage execution evidence, not a verification result. See
 [RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).
 
 ## Do I need every artifact for every PR?
@@ -47,16 +48,26 @@ modifications.
 
 ## What if the requirement is ambiguous?
 
-Treat unresolved blocking ambiguity as a stop condition. Record the question,
-the clarification, and remaining unknowns in the Requirement Contract before
-generating code.
+Treat unresolved blocking ambiguity as a stop condition. Inside Stage 1,
+detect ambiguity, clarify, then write acceptance criteria before generating
+code. Record known ambiguities, missing information, assumptions, questions,
+and implicit requirements in the Requirement Contract.
 
 ## Does more verification always mean better VAD?
 
-No. Record verification cost against risk. Large effort on low-risk work is
-waste; thin evidence on high-risk work is the defect.
+No. Record verification cost against risk across the full change lifecycle,
+not only generation speed. Large effort on low-risk work is waste; thin
+evidence on high-risk work is the defect. Low-risk changes are not required
+to fill every verification-cost field.
 
 ## Is a performance checkbox enough?
 
-No. When performance is in scope, record performance evidence: baseline, after,
-environment, and source.
+No. When performance is in scope, record performance evidence: CPU, memory,
+queries, allocations, latency, external API calls, and infrastructure cost as
+applicable.
+
+## Are AGENTS.md or CLAUDE.md rules part of VAD?
+
+Persistent AI instructions should carry instruction provenance: why the rule
+exists, what failure it prevents, scope, and when it may be removed. Treat
+them as maintainable software artifacts, not permanent accumulated memory.
