@@ -5,7 +5,7 @@ Verifiiable AI Development
 
 > A proposed open methodology for building AI-assisted software that remains understandable, traceable, verifiable, and recoverable by humans.
 
-[한국어 문서](./README.ko.md) · [Core RFC](./rfcs/0001-vad-core.md) · [Contributing](./CONTRIBUTING.md)
+[한국어 문서](./README.ko.md) · [Core RFC](./rfcs/0001-vad-core.md) · [RFC 0002 Evidence Model](./rfcs/0002-vad-v0.2-evidence-model.md) · [Contributing](./CONTRIBUTING.md)
 
 ---
 
@@ -112,6 +112,8 @@ The requirement should describe:
 
 AI can implement an incorrect requirement very efficiently. Therefore, requirement quality is one of the most important controls in AI-assisted development.
 
+Unresolved ambiguity is a stop condition. Record open questions, the clarification given, and what remains unknown before generating code. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
+
 ---
 
 ## 2. System Analysis
@@ -212,6 +214,8 @@ Do not combine refactoring with feature development.
 Stop and explain if the requested scope must expand.
 ```
 
+Record **instruction provenance**: the issue, prompt, agent task, or human amendment that authorized the change. If an agent executed the work, keep an **execution trace** of tools used, files touched, and stop or error events. These records are verification inputs, not verification results. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
+
 ---
 
 ## 5. Change Mapping
@@ -295,6 +299,10 @@ Review:
 * database migration safety,
 * rollback readiness,
 * and incident response procedures.
+
+**Performance evidence:** when performance is in scope, record baseline vs after, the environment, and the metric source. A checkbox is not evidence.
+
+**Verification cost:** record the effort, tools, and coverage used, and whether that cost is justified by risk. The goal is not expensive ceremony; insufficient evidence at high risk is the defect.
 
 ### Key principle
 
@@ -583,7 +591,8 @@ ai-vad-methodology/
 │
 ├── rfcs/
 │   ├── README.md
-│   └── 0001-vad-core.md
+│   ├── 0001-vad-core.md
+│   └── 0002-vad-v0.2-evidence-model.md
 │
 ├── templates/
 │   ├── requirement-contract.md
@@ -685,6 +694,7 @@ Suggest a specific change to the methodology.
 * Introduce risk-level guidance
 * Create pull request and issue templates
 * Define minimum verification criteria
+* Evidence model (proposed): verification cost, performance evidence, instruction provenance, agent execution evidence, requirement ambiguity/clarification — [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md)
 
 ## Draft v0.3
 
