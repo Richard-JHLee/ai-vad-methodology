@@ -1,6 +1,8 @@
 # VAD Workflow
 
-VAD defines seven primary stages. Evidence fields proposed in
+VAD defines seven primary stages. VAD v0.2 does not add new stages or
+principles. It makes AI-assisted changes more inspectable by extending the
+evidence required across the existing lifecycle. Evidence fields proposed in
 [RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md) attach to these stages;
 they do not add an eighth stage.
 
