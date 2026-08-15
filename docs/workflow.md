@@ -26,12 +26,19 @@ Requirement Definition
   → Ambiguity Detection
   → Requirement Clarification
   → Acceptance Criteria
-  → Implementation
 ```
 
-Record requirement ambiguity: known ambiguities, missing information,
-assumptions, questions requiring human clarification, and implicit
-requirements discovered. Unresolved blocking ambiguity is a stop condition.
+Implementation belongs to Stage 4 (Controlled Code Generation), not this stage.
+
+A **blocking ambiguity** is an unresolved requirement uncertainty that could
+materially change implementation scope, acceptance criteria, security or privacy
+behavior, data handling, permissions or authorization, externally observable
+behavior, or rollback or operational risk. Non-blocking ambiguity may be
+recorded as an accepted assumption.
+
+Unresolved blocking ambiguity is a stop condition. Code generation must not
+proceed until the ambiguity is either (1) clarified, or (2) explicitly accepted
+by the responsible human as residual risk.
 
 **Key question:** What exactly should happen, and when should it fail?
 
@@ -62,46 +69,59 @@ AI implements only the approved requirement and scope. Before coding, it should
 state planned files, non-goals, assumptions, risks, and tests. Developers review
 that plan before accepting implementation.
 
-Persistent AI instructions relied on during generation (`AGENTS.md`,
-`CLAUDE.md`, system prompts, repository rules) should carry **instruction
-provenance**. If an agent executes the work, produce **agent execution
-evidence** as the work happens. That evidence is cross-stage: it records what
-executed the change. It is not a verification result and not an eighth stage.
+Persistent AI instructions relied on or modified during generation
+(`AGENTS.md`, `CLAUDE.md`, repository instructions, persistent system prompts,
+persistent agent rules) should carry **instruction provenance**. Temporary
+conversational prompts are out of scope. Record the reason for every meaningful
+persistent instruction; do not document every instruction file simply because
+it exists.
+
+If an agent executes the work, produce **agent execution evidence** as the work
+happens. That evidence is cross-stage: it records what executed the change. It
+is not a verification result and not an eighth stage. Depth scales by
+[risk level](./risk-levels.md).
 
 ## 5. Change Mapping
 
 Produce a change map covering:
 
-* **change provenance** — what changed, why, requirement link, risks, how it
-  was verified,
-* **instruction provenance** — persistent AI instructions used or changed,
+* **change provenance** — the file map (what changed, why, requirement link,
+  risks, how it will be verified),
+* **instruction provenance** — only persistent AI instructions this change
+  relied on or modified,
 * **a pointer to agent execution evidence** when an agent ran.
 
 Artifact: [change-map.md](../templates/change-map.md)
 
 ## 6. Automated and Human Verification
 
-Verify in layers. These layers are verification results:
+Verify using evidence and measures. These are **not** all verification
+*results*:
 
-* correctness (static and functional),
-* security,
-* regression,
-* performance evidence,
-* operational cost,
-* verification cost.
+* correctness evidence (static and functional),
+* security evidence,
+* regression evidence,
+* operational evidence (parent heading; includes performance evidence and
+  **operational cost** — post-merge runtime / infrastructure cost),
+* verification cost (lifecycle **process measure**, not evidence that the
+  change is correct).
 
-**Performance evidence:** for performance-sensitive changes, record measurable
-runtime impact (CPU, memory, queries, allocations, latency, external API
-calls, infrastructure cost). Passing functional tests does not prove that
-generated code is operationally efficient.
+**Operational evidence:** for performance-sensitive changes, record only the
+metrics relevant to the change (CPU, memory, queries, allocations, latency,
+external API calls, infrastructure cost). Passing functional tests does not
+prove that generated code is operationally efficient. N/A is acceptable when
+performance, cost, or capacity is not in scope.
 
-**Verification cost:** evaluate not only whether a change is correct, but also
-how expensive it is to verify. AI-assisted productivity must be evaluated
-across the full change lifecycle, not only at the point of code generation.
-A change is not necessarily more productive if faster generation creates
-disproportionate review, verification, or operational cost. Depth scales by
-[risk level](./risk-levels.md); Low-risk work is not required to fill every
-field.
+**Verification cost** is the **pre-merge** effort and resource cost required to
+establish sufficient confidence in a change. AI-assisted productivity must be
+evaluated across the full change lifecycle, not only at the point of code
+generation. A change is not necessarily more productive if faster generation
+creates disproportionate review, verification, or operational cost. Depth
+scales by [risk level](./risk-levels.md); Low-risk work is not required to fill
+every field. Optional proxies include reviewer iterations, review comments,
+time to merge (may include queue time), test execution cost, static-analysis
+finding *count* or resolution effort (the findings themselves are verification
+results), human review effort, and unresolved verification uncertainty.
 
 **Key principle:** AI-generated tests are inputs, not final results.
 
@@ -109,17 +129,23 @@ Artifact: [verification-report.md](../templates/verification-report.md)
 
 ## Agent execution evidence (cross-stage)
 
-Not a workflow stage. Not a verification result.
+Not a workflow stage. Not a verification result. Not a sixth required artifact.
 
 Agent execution evidence is produced during agent execution and referenced by
 both the Change Map (pointer) and the Verification Report (detail). It records
-what executed the change: initiating human, agent/model, delegated agents,
-tools, MCP servers, permissions, external systems, generated artifacts,
-verification results used as inputs, human approvals, execution cost, and
-rollback owner.
+what executed the change and serves as **input** to verification and
+accountability (Traceable, Accountable). Canonical rollback owner lives in
+Verification Report → Approval; this record uses **accountable owner**.
 
-It serves as **input** to verification and accountability (Traceable,
-Accountable). Depth: only when an agent ran.
+Do not record secrets, tokens, credentials, private keys, or sensitive payload
+contents. Record identifiers or references instead.
+
+Depth:
+
+* **Low** (if an agent ran): initiating human, agent/model, accountable owner.
+* **Medium:** add tools or persistent instructions when relevant.
+* **High / Critical:** full set when the agent accessed elevated permissions,
+  MCP servers, external systems, production systems, or sensitive data.
 
 ## 7. Progressive Deployment
 
@@ -143,5 +169,5 @@ failure modes, evidence, recovery, and ownership. See [README.md](../README.md).
 
 Stop when scope expands unexpectedly, a security boundary is unclear, data loss
 is possible, required tests cannot run, rollback is unavailable for high-risk
-work, assumptions cannot be verified, or blocking requirement ambiguity remains
-unresolved.
+work, assumptions cannot be verified, or unresolved blocking ambiguity remains
+(not clarified and not explicitly accepted as residual risk).
