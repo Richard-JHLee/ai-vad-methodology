@@ -90,3 +90,6 @@ rollout for High/Critical paths. Collect counterexamples and revise this RFC.
 
 * [README.md](../README.md)  
 * [README.ko.md](../README.ko.md)  
+* [RFC 0002: VAD v0.2 Evidence Model](./0002-vad-v0.2-evidence-model.md) — additive
+  evidence fields; the six core properties, seven stages, and five required
+  artifacts in this RFC are unchanged.

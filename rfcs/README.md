@@ -5,6 +5,7 @@ This directory holds **Requests for Comments** that evolve VAD.
 | Number | Title | Status |
 | ------ | ----- | ------ |
 | [0001](./0001-vad-core.md) | VAD Core | Draft |
+| [0002](./0002-vad-v0.2-evidence-model.md) | VAD v0.2 Evidence Model | Draft |
 
 ## How to propose an RFC
 
