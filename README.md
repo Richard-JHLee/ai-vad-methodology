@@ -51,7 +51,7 @@ Instead, it aims to ensure that AI-generated changes remain:
 v0.2 does not add properties. It thickens three of them. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
 
 * **Traceable** — change provenance, instruction provenance, agent execution evidence.
-* **Verifiable** — correctness, security, regression, performance evidence, operational cost, verification cost.
+* **Verifiable** — correctness, security, regression, operational evidence (including performance and operational cost), verification cost as a process measure.
 * **Accountable** — human approval, execution ownership, rollback ownership.
 
 ---
@@ -125,10 +125,13 @@ Requirement Definition
   → Ambiguity Detection
   → Requirement Clarification
   → Acceptance Criteria
-  → Implementation
 ```
 
-Unresolved ambiguity is a stop condition. Record known ambiguities, missing information, assumptions, questions requiring human clarification, and implicit requirements before generating code. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
+Implementation belongs to Stage 4 (Controlled Code Generation), not this stage.
+
+A **blocking ambiguity** is an unresolved requirement uncertainty that could materially change implementation scope, acceptance criteria, security or privacy behavior, data handling, permissions or authorization, externally observable behavior, or rollback or operational risk. Non-blocking ambiguity may be recorded as an accepted assumption.
+
+Unresolved blocking ambiguity is a stop condition. Code generation must not proceed until the ambiguity is either (1) clarified, or (2) explicitly accepted by the responsible human as residual risk. Record known ambiguities, missing information, assumptions, questions requiring human clarification, and implicit requirements as applicable by risk. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
 
 ---
 
@@ -230,9 +233,9 @@ Do not combine refactoring with feature development.
 Stop and explain if the requested scope must expand.
 ```
 
-Persistent AI instructions such as `AGENTS.md`, `CLAUDE.md`, system prompts, and repository rules should record **instruction provenance**: the rule, why it exists, the failure or risk it prevents, when it was introduced, its scope, and when it may be removed. Treat these as maintainable software artifacts, not permanent accumulated memory. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
+Persistent AI instructions such as `AGENTS.md`, `CLAUDE.md`, repository instructions, persistent system prompts, and persistent agent rules should record **instruction provenance** when this change **relied on or modified** them: the rule, why it exists, the failure or risk it prevents, when it was introduced, its scope, and when it may be removed. Record the reason for every meaningful persistent instruction. Temporary conversational prompts are out of scope. Do not document every existing instruction file simply because it exists. Treat these as maintainable software artifacts, not permanent accumulated memory. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
 
-If an agent executes the work, produce **agent execution evidence** while the agent runs. That record is cross-stage (Change Map pointer + Verification Report detail). It is not a verification result and not an eighth workflow stage.
+If an agent executes the work, produce **agent execution evidence** while the agent runs, scaled by [risk level](./docs/risk-levels.md). That record is cross-stage (Change Map pointer + Verification Report detail). It is not a verification result and not an eighth workflow stage. Do not record secrets, tokens, credentials, private keys, or sensitive payload contents.
 
 ---
 
@@ -320,18 +323,17 @@ Review:
 * rollback readiness,
 * and incident response procedures.
 
-Stage 6 verification layers are:
+Stage 6 uses verification **evidence** and **measures** (these are not all verification *results*):
 
-* correctness,
-* security,
-* regression,
-* performance evidence,
-* operational cost,
-* verification cost.
+* correctness evidence,
+* security evidence,
+* regression evidence,
+* operational evidence (parent heading; includes performance evidence and operational cost — post-merge runtime / infrastructure cost),
+* verification cost (lifecycle process measure, not evidence that the change is correct).
 
-### Performance Evidence
+### Operational Evidence
 
-For performance-sensitive changes, verification should consider measurable runtime impact.
+**Operational Evidence** is the parent heading. **Performance Evidence** may include measurable runtime impact. Record only the metrics relevant to the change. N/A is acceptable when performance, cost, or capacity is not in scope.
 
 Examples:
 
@@ -347,17 +349,17 @@ Passing functional tests does not prove that generated code is operationally eff
 
 ### Verification Cost
 
-AI-assisted development should evaluate not only whether a change is correct, but also how expensive it is to verify.
+**Verification Cost** is the **pre-merge** effort and resource cost required to establish sufficient confidence in a change. It is a lifecycle **process measure**. It is not evidence that the change is correct.
+
+**Operational cost** is **post-merge** runtime / infrastructure cost and is recorded under Operational Evidence.
 
 AI-assisted productivity must be evaluated across the full change lifecycle, not only at the point of code generation.
 
 A change is not necessarily more productive if faster generation creates disproportionate review, verification, or operational cost.
 
-Faster generation is not an improvement if the saved generation cost is transferred into disproportionate verification cost.
+Optional proxies may include reviewer iterations, review comments, time to merge (may include queue time), test execution cost, static-analysis finding *count* or resolution effort (the findings themselves are verification results), human review effort, and unresolved verification uncertainty. These are **not** mandatory measurements for every Low-risk change. Depth follows [risk levels](./docs/risk-levels.md).
 
-Evidence may include reviewer iterations, review comments, time to merge, test execution cost, static-analysis findings, human review effort, and unresolved verification uncertainty. These are **not** mandatory measurements for every Low-risk change. Depth follows [risk levels](./docs/risk-levels.md).
-
-Agent execution evidence is **not** a Stage 6 verification layer. It is cross-stage execution evidence: input to verification and accountability, referenced from the Change Map and detailed in the Verification Report.
+Agent execution evidence is **not** a Stage 6 verification layer. It is cross-stage execution evidence: input to verification and accountability, referenced from the Change Map and detailed in the Verification Report. Depth scales by risk; the full field list is not required for every agent-assisted change.
 
 ### Key principle
 
@@ -749,7 +751,7 @@ Suggest a specific change to the methodology.
 * Introduce risk-level guidance
 * Create pull request and issue templates
 * Define minimum verification criteria
-* Evidence model (proposed): verification cost, performance evidence, instruction provenance, agent execution evidence, requirement ambiguity/clarification — [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md)
+* Evidence model (proposed): verification cost, operational evidence, instruction provenance, agent execution evidence, requirement ambiguity/clarification — [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md)
 
 ## Draft v0.3
 
