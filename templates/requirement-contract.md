@@ -40,26 +40,33 @@ Authn/authz, secrets, PII, audit logging.
 
 Latency, rate limits, payload size, cost constraints.
 
-## 9. Acceptance criteria
+## 9. Requirement Ambiguity
 
-- [ ]
-- [ ]
+Inside Stage 1 (not a new workflow stage):
 
-## 10. Recovery / rollback expectations
+Requirement Definition → Ambiguity Detection → Requirement Clarification
+→ Acceptance Criteria → Implementation
 
-How do we disable or reverse this if it misbehaves?
-
-## 11. Explicit non-goals
-
-What will this change **not** do?
-
-## 12. Ambiguity and clarification
-
-| Ambiguity | Question | Clarification | Remaining unknown | Blocking? |
-| --------- | -------- | ------------- | ----------------- | --------- |
-|           |          |               |                   |           |
+- Known ambiguities:
+- Missing information:
+- Assumptions made:
+- Questions requiring human clarification:
+- Implicit requirements discovered:
 
 Unresolved blocking ambiguity is a stop condition. Do not generate code until
 it is resolved or explicitly accepted as residual risk. Depth scales by
 [risk level](../docs/risk-levels.md). See
 [RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).
+
+## 10. Acceptance criteria
+
+- [ ]
+- [ ]
+
+## 11. Recovery / rollback expectations
+
+How do we disable or reverse this if it misbehaves?
+
+## 12. Explicit non-goals
+
+What will this change **not** do?

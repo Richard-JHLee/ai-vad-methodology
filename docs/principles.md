@@ -45,7 +45,9 @@ They are not a ban on AI agents, a replacement for Agile/DevOps/TDD, or a claim
 that following VAD makes code safe by itself. They complement existing
 engineering practice when AI accelerates change volume.
 
-v0.2 evidence fields (ambiguity, instruction provenance, agent execution,
-verification cost, performance evidence) attach to existing stages. They do
-not add a seventh core property or an eighth workflow stage. See
+v0.2 evidence fields attach to existing stages: requirement ambiguity,
+instruction provenance, verification cost, and performance evidence. Agent
+execution evidence is cross-stage (referenced by the Change Map and
+Verification Report); it is not a verification result and not an eighth
+stage. None of this adds a seventh core property. See
 [RFC 0002](../rfcs/0002-vad-v0.2-evidence-model.md).

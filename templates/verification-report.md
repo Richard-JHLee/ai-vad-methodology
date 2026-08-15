@@ -40,7 +40,7 @@ Related flows / APIs / jobs rechecked:
 | Migration safety | | |
 
 A checkbox is not performance evidence. When performance, capacity, or
-infrastructure cost is in scope, complete section 9.
+infrastructure cost is in scope, complete Operational Evidence below.
 
 ## 5. AI-generated tests
 
@@ -58,26 +58,64 @@ Environments, flags, progressive rollout plan.
 
 * Technical approver:
 * (Critical) Independent reviewer:
+* Rollback owner:
 
-## 9. Performance evidence
+## Operational Evidence
 
-Record when performance, capacity, or infrastructure cost is in scope.
+For performance-sensitive changes, verification should consider measurable
+runtime impact. Passing functional tests does not prove that generated code is
+operationally efficient.
 
-| Metric | Baseline | After | Environment | Source |
-| ------ | -------- | ----- | ----------- | ------ |
-|        |          |       |             |        |
+- CPU impact:
+- Memory impact:
+- Query impact:
+- Latency impact:
+- External API impact:
+- Estimated infrastructure cost:
+- Allocations:
 
-## 10. Verification cost
+## Verification Cost
 
-| Activity | Effort | Coverage | Justified by risk? |
-| -------- | ------ | -------- | ------------------ |
-|          |        |          |                    |
+AI-assisted development should evaluate not only whether a change is correct,
+but also how expensive it is to verify.
 
-## 11. Agent execution evidence (if applicable)
+AI-assisted productivity must be evaluated across the full change lifecycle,
+not only at the point of code generation.
 
-When an agent ran, this trace is a verification *input*, not a verification
-*result*. Omit if no agent executed the change.
+A change is not necessarily more productive if faster generation creates
+disproportionate review, verification, or operational cost.
 
-| Step | Tool | Target | Result | Stop/error |
-| ---- | ---- | ------ | ------ | ---------- |
-|      |      |        |        |            |
+Faster generation is not an improvement if the saved generation cost is
+transferred into disproportionate verification cost.
+
+Fill fields in proportion to [risk level](../docs/risk-levels.md). Low-risk
+changes are not required to measure every item.
+
+- Reviewer iterations:
+- Review comments:
+- Time to merge:
+- Test execution cost:
+- Static-analysis findings:
+- Human review effort:
+- Unresolved verification uncertainty:
+
+## Agent Execution Evidence (if applicable)
+
+**Not a verification result.** This is cross-stage execution evidence produced
+during agent execution and referenced from the
+[Change Map](./change-map.md). It records what executed the change and serves
+as **input** to verification and accountability. Omit if no agent ran. Do not
+treat this block as an eighth workflow stage.
+
+- Initiating human:
+- Agent / model used:
+- Delegated agents:
+- Tools invoked:
+- MCP servers accessed:
+- Permissions granted:
+- External systems accessed:
+- Generated artifacts:
+- Verification results (inputs, not conclusions):
+- Human approvals:
+- Execution cost:
+- Rollback owner:
