@@ -48,6 +48,12 @@ Instead, it aims to ensure that AI-generated changes remain:
 * **Recoverable** — failures can be detected and reversed.
 * **Accountable** — human responsibility remains clearly defined.
 
+v0.2 does not add properties. It thickens three of them. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
+
+* **Traceable** — change provenance, instruction provenance, agent execution evidence.
+* **Verifiable** — correctness, security, regression, performance evidence, operational cost, verification cost.
+* **Accountable** — human approval, execution ownership, rollback ownership.
+
 ---
 
 ## Status
@@ -112,7 +118,17 @@ The requirement should describe:
 
 AI can implement an incorrect requirement very efficiently. Therefore, requirement quality is one of the most important controls in AI-assisted development.
 
-Unresolved ambiguity is a stop condition. Record open questions, the clarification given, and what remains unknown before generating code. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
+Inside this stage (not a new top-level stage):
+
+```text
+Requirement Definition
+  → Ambiguity Detection
+  → Requirement Clarification
+  → Acceptance Criteria
+  → Implementation
+```
+
+Unresolved ambiguity is a stop condition. Record known ambiguities, missing information, assumptions, questions requiring human clarification, and implicit requirements before generating code. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
 
 ---
 
@@ -214,7 +230,9 @@ Do not combine refactoring with feature development.
 Stop and explain if the requested scope must expand.
 ```
 
-Record **instruction provenance**: the issue, prompt, agent task, or human amendment that authorized the change. If an agent executed the work, keep an **execution trace** of tools used, files touched, and stop or error events. These records are verification inputs, not verification results. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
+Persistent AI instructions such as `AGENTS.md`, `CLAUDE.md`, system prompts, and repository rules should record **instruction provenance**: the rule, why it exists, the failure or risk it prevents, when it was introduced, its scope, and when it may be removed. Treat these as maintainable software artifacts, not permanent accumulated memory. See [RFC 0002](./rfcs/0002-vad-v0.2-evidence-model.md).
+
+If an agent executes the work, produce **agent execution evidence** while the agent runs. That record is cross-stage (Change Map pointer + Verification Report detail). It is not a verification result and not an eighth workflow stage.
 
 ---
 
@@ -240,6 +258,8 @@ The change map should answer:
 * Which requirement does it satisfy?
 * What could break?
 * How was it verified?
+
+Stage 5 also records **change provenance**, **instruction provenance**, and a **pointer to agent execution evidence** when an agent ran. Agent execution evidence itself is cross-stage; it is not a verification result.
 
 ---
 
@@ -300,9 +320,44 @@ Review:
 * rollback readiness,
 * and incident response procedures.
 
-**Performance evidence:** when performance is in scope, record baseline vs after, the environment, and the metric source. A checkbox is not evidence.
+Stage 6 verification layers are:
 
-**Verification cost:** record the effort, tools, and coverage used, and whether that cost is justified by risk. The goal is not expensive ceremony; insufficient evidence at high risk is the defect.
+* correctness,
+* security,
+* regression,
+* performance evidence,
+* operational cost,
+* verification cost.
+
+### Performance Evidence
+
+For performance-sensitive changes, verification should consider measurable runtime impact.
+
+Examples:
+
+* CPU usage,
+* memory usage,
+* database queries,
+* allocations,
+* latency,
+* external API calls,
+* infrastructure cost.
+
+Passing functional tests does not prove that generated code is operationally efficient.
+
+### Verification Cost
+
+AI-assisted development should evaluate not only whether a change is correct, but also how expensive it is to verify.
+
+AI-assisted productivity must be evaluated across the full change lifecycle, not only at the point of code generation.
+
+A change is not necessarily more productive if faster generation creates disproportionate review, verification, or operational cost.
+
+Faster generation is not an improvement if the saved generation cost is transferred into disproportionate verification cost.
+
+Evidence may include reviewer iterations, review comments, time to merge, test execution cost, static-analysis findings, human review effort, and unresolved verification uncertainty. These are **not** mandatory measurements for every Low-risk change. Depth follows [risk levels](./docs/risk-levels.md).
+
+Agent execution evidence is **not** a Stage 6 verification layer. It is cross-stage execution evidence: input to verification and accountability, referenced from the Change Map and detailed in the Verification Report.
 
 ### Key principle
 
