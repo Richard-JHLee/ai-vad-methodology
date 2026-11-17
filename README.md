@@ -7,6 +7,11 @@ Verifiiable AI Development
 
 [한국어 문서](./README.ko.md) · [Core RFC](./rfcs/0001-vad-core.md) · [RFC 0002 Evidence Model](./rfcs/0002-vad-v0.2-evidence-model.md) · [Contributing](./CONTRIBUTING.md)
 
+Try the [local CLI reference implementation](./tools/README.md) to record
+requirements, impact, verification evidence, and merge reviews in a Git repository.
+It uses Python's standard library and Git; see the
+[architecture and development plan (Korean)](./docs/vad-cli-plan.md).
+
 ---
 
 ## Why VAD?

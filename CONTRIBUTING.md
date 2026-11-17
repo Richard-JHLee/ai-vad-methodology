@@ -41,6 +41,10 @@ counterexamples, clearer wording, or better templates are especially welcome.
 This repository is documentation-first. No build step is required. Edit Markdown
 and open a pull request against `main`.
 
+For changes to the [local CLI](./tools/README.md), run
+`PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v`.
+The tests exercise the CLI in temporary Git repositories without external packages.
+
 ## License
 
 By contributing, you agree that your contributions are licensed under

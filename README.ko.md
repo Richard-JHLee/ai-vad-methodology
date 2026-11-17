@@ -4,6 +4,10 @@
 
 [English](./README.md) · [핵심 RFC](./rfcs/0001-vad-core.md) · [RFC 0002 증거 모델](./rfcs/0002-vad-v0.2-evidence-model.md) · [기여 안내](./CONTRIBUTING.md)
 
+[로컬 CLI 참조 구현](./tools/README.md)으로 Git 저장소에서 요구사항·영향 분석·
+검증 근거·병합 검토 기록을 관리할 수 있습니다. Python 표준 라이브러리와 Git만
+사용하며, [아키텍처 및 개발 계획](./docs/vad-cli-plan.md)에 범위와 제약을 정리했습니다.
+
 ---
 
 ## 왜 VAD가 필요한가?
