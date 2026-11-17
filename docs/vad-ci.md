@@ -56,6 +56,9 @@ python3 tools/vad.py check -- actual-change-id
 
 [CLI tests](../.github/workflows/ci.yml)는 `main` push, PR, 수동 실행에 반응한다.
 Python 3.9와 3.13에서 `python3 -m unittest discover -s tests -v`를 실행한다.
+실행 환경은 `ubuntu-24.04`로 고정한다. 최초 원격 실행에서 `ubuntu-latest`의 Ubuntu
+26.04에는 Python 3.9 배포본이 없음을 확인했으며, 공식 제공 목록에 있는 24.04를
+선택했다. 이는 CLI 테스트 실패와 구분되는 runner 호환성 수정이다.
 테스트가 만드는 임시 승인자는 검증용 데이터이며 실제 변경의 승인 기록이 아니다.
 
 ### VAD 준비 상태 게이트
@@ -119,3 +122,4 @@ jobs:
 * [재사용 워크플로](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows)
 * [workflow_dispatch 및 이벤트](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 * [checkout](https://github.com/actions/checkout), [setup-python](https://github.com/actions/setup-python), [upload-artifact](https://github.com/actions/upload-artifact)
+* [공식 Python 배포 환경 목록](https://github.com/actions/python-versions/blob/main/versions-manifest.json)
