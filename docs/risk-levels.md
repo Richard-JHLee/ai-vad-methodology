@@ -19,6 +19,16 @@ Ask:
 3. Does it touch money, identity, privacy, or irreversible state?
 4. How many systems and clients depend on the path?
 
+Examples are prompts, not automatic classifications: an isolated infrastructure
+comment edit need not be Critical; a one-line authorization change can be High.
+Use the highest plausible harm on the affected path, exposure, and recoverability.
+Record the rationale, and reassess if callers, permissions, or data effects expand.
+Passing tests or a small diff does not lower the inherent impact of a failure.
+
+Select verification from that impact, including denial and data-integrity paths
+where relevant. Record missing checks separately from passing ones. See the
+proposed [verification decisions](../rfcs/0003-verification-decisions.md).
+
 When unsure, choose the higher level for the first release of a change, then
 relax process for later low-risk iterations once the blast radius is known.
 

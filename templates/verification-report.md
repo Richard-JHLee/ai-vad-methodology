@@ -9,11 +9,44 @@
 Do not record secrets, tokens, credentials, private keys, or sensitive payload
 contents in VAD artifacts. Record references or identifiers instead when needed.
 
+## Verification scope and evidence (proposed)
+
+See [RFC 0003](../rfcs/0003-verification-decisions.md). Keep this compact for
+Low-risk work; links to existing CI reports may supply the details.
+
+* Candidate revision: (commit SHA, or base SHA + saved working-diff reference)
+* Environment / relevant config and dependency versions:
+* Affected callers, screens, APIs, data, permissions, existing behavior:
+* Baseline checks / known pre-existing failures / unavailable checks:
+* Check selection and reason for full suite, if used:
+
+Use these states throughout this report:
+
+| State | Meaning |
+| ----- | ------- |
+| Pass | Ran; observed result met the stated expectation in the recorded scope. |
+| Fail | Ran; observed result did not meet the expectation. |
+| Blocked | Could not run or finish; record the missing prerequisite. |
+| Not run | Applicable but not attempted; record why and the remaining risk. |
+| N/A | Outside the analyzed impact; record why. |
+
+N/A does not mean an environment was unavailable. Blanks are not passing checks.
+Use acceptance-criterion IDs or short descriptions. Derive expected behavior
+from the requirement or established contract, not just the generated code.
+
+| Criterion / risk | Command or manual procedure | Expected | Observed / state | Time / evidence reference |
+| ---------------- | --------------------------- | -------- | ---------------- | ------------------------- |
+| | | | | |
+
+The sections below may reference these entries instead of duplicating evidence.
+After code, requirement, dependency, config, or deployment-context changes,
+rerun affected checks and explain why any retained evidence still applies.
+
 ## 1. Static verification
 
 | Check | Result | Notes |
 | ----- | ------ | ----- |
-| Build / compile | Pass / Fail / N/A | |
+| Build / compile | | |
 | Lint / types | | |
 | Secrets / unsafe APIs | | |
 | Dependency diff reviewed | | |
@@ -55,7 +88,13 @@ List AI-written tests and what was independently reviewed or supplemented.
 
 ## 7. Deployment conditions
 
-Environments, flags, progressive rollout plan.
+* Target environment / rollout stages / flags:
+* Health signals and stop / rollback thresholds:
+* Observation window and person monitoring:
+* Recovery steps and evidence of readiness: (include exercise for Critical)
+* Data / external side-effect recovery: (code revert alone may not undo these)
+
+Use N/A with a reason for items outside scope, such as deployment for a copy edit.
 
 ## 8. Approval / Accountability
 
@@ -64,6 +103,20 @@ Canonical rollback / accountable owner-of-record:
 * Technical approver:
 * (Critical) Independent reviewer:
 * Rollback owner:
+
+Proposed decision record (RFC 0003):
+
+* Next gate: (merge / limited rollout / broader release)
+* Decision: Ready / Not ready / Ready with accepted residual risk
+* Approved candidate revision / approver / date: (pending until human approval)
+* Unresolved Fail / Blocked / Not run entries:
+* If an exception is allowed: gap, plausible harm, compensating controls,
+  accepting human, follow-up owner and due date:
+
+Required failed or missing checks default to Not ready. Exceptions do not change
+check results to Pass or override non-waivable team controls. Approval does not
+automatically apply to a changed candidate. Merge readiness is not production
+validation; recovery must meet the release requirement before deployment.
 
 ## Operational Evidence
 

@@ -365,6 +365,16 @@ Agent execution evidence is **not** a Stage 6 verification layer. It is cross-st
 
 > AI-generated explanations and tests are verification inputs, not verification results.
 
+### Verification decisions (proposed)
+
+[RFC 0003](./rfcs/0003-verification-decisions.md) makes evidence actionable:
+select checks from affected callers, screens, APIs, data, and permissions; bind
+results to the checked revision and environment; distinguish Pass, Fail, Blocked,
+Not run, and N/A. Reassess evidence after relevant changes. A human records
+readiness for the next gate and any accepted residual risk; missing checks never
+become passes. See the [workflow](./docs/workflow.md) and
+[illustrative walkthrough](./examples/python/README.md). Core status remains Draft 0.1.
+
 ---
 
 ## 7. Progressive Deployment

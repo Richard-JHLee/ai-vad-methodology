@@ -55,6 +55,15 @@ clients before editing.
 
 Artifact: [system-map.md](../templates/system-map.md)
 
+Before implementation, select checks from the affected callers, screens, APIs,
+data, permissions, and existing behavior. Run relevant baseline checks when
+feasible; distinguish pre-existing failures and unavailable checks. After
+implementation, run checks against the candidate revision. Use the full suite
+when shared foundations prevent narrowing the scope or focused checks reveal
+a concrete regression risk; record why. Full-suite execution does not replace
+impact analysis. This clarification is proposed in
+[RFC 0003](../rfcs/0003-verification-decisions.md).
+
 ## 3. Change Scope Limitation
 
 Keep changes small enough for humans to review. Default guidance:
@@ -129,6 +138,25 @@ results), human review effort, and unresolved verification uncertainty.
 
 Artifact: [verification-report.md](../templates/verification-report.md)
 
+### Verification decisions (proposed)
+
+[RFC 0003](../rfcs/0003-verification-decisions.md) connects each acceptance
+criterion or affected risk to a check and its observed result. Record the checked
+revision, environment, command or manual procedure, expected behavior, execution
+time, and evidence reference. Existing CI reports may provide these by link;
+one compact entry is sufficient for Low-risk work.
+
+Use **Pass**, **Fail**, **Blocked**, **Not run**, and **N/A** consistently:
+Blocked means an execution prerequisite was unavailable; Not run means an
+applicable check was not attempted. Both are gaps. N/A requires a scope-based
+reason. Pass requires observed behavior matching an expectation derived from the
+requirement or established contract. Another model's agreement alone is not
+independent verification. For bug fixes, reproduce the original failure when feasible.
+
+When code, requirements, dependencies, configuration, or deployment context
+change, reassess coverage and rerun affected checks. Explain why retained results
+still apply. Approval does not automatically transfer to another candidate.
+
 ## Agent execution evidence (cross-stage)
 
 Not a workflow stage. Not a verification result. Not a sixth required artifact.
@@ -160,6 +188,10 @@ Local → Development → Internal users → Limited production → Broader rele
 Observe and recover here: health metrics, error-rate thresholds, automatic
 rollback, and named owners. This is Recoverable, not an eighth stage.
 
+Specify the target environment, observation window, measurable stop/rollback
+trigger, and rollback owner where applicable. Code rollback does not undo data
+writes or external side effects; plan recovery for those separately.
+
 **Key question:** Can this change be stopped or reversed before it affects every user?
 
 ## Completion criteria
@@ -167,9 +199,21 @@ rollback, and named owners. This is Recoverable, not an eighth stage.
 A responsible developer should be able to explain purpose, scope, impact,
 failure modes, evidence, recovery, and ownership. See [README.md](../README.md).
 
+Under the proposed verification decisions, the human approver records **Ready**,
+**Not ready**, or **Ready with accepted residual risk** for a named candidate and
+next gate (for example, merge or limited rollout). Required failed or missing
+checks default to Not ready. An allowed exception records the gap, plausible
+harm, compensating controls, accountable human, and follow-up owner and due date.
+It never changes the underlying result to Pass or overrides team controls.
+Ready for merge is not a claim of production validation.
+
 ## Stop conditions
 
 Stop when scope expands unexpectedly, a security boundary is unclear, data loss
 is possible, required tests cannot run, rollback is unavailable for high-risk
 work, assumptions cannot be verified, or unresolved blocking ambiguity remains
 (not clarified and not explicitly accepted as residual risk).
+
+Stop the affected action; analysis and remediation may continue. Record the gap
+and condition for resuming. A verification exception follows the human decision
+rule above; it cannot make an inadequate recovery plan satisfy a release requirement.
