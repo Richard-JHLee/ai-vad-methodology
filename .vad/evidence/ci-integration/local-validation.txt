@@ -1,0 +1,3 @@
+Observed local validation: both workflow YAML files parsed; Python 3.9 syntax parsed; 28 Markdown files and 108 local links checked; fenced blocks and git diff --check passed.
+Actual historical case: check returned 1 without changing its record.
+Dynamic ID --help with an argument separator: check returned 2, not help success.

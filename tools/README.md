@@ -96,7 +96,19 @@ python3 tools/vad.py report limit-items > .vad/limit-items-report.md
 `Ready` means a current **merge review record** exists. It never means production
 safety or authenticated approval. `status` is informational and exits zero when
 it can read the record, even for Not ready; do not use its exit code as a CI gate.
-Invalid input and failed writes/approvals exit 1; argument errors exit 2.
+For these existing commands, invalid input and failed writes/approvals exit 1;
+argument errors exit 2. For a CI gate, use `check` instead:
+
+```sh
+python3 tools/vad.py check -- limit-items
+```
+
+`check` prints the same JSON as `status` and exits **0 for Ready**, **1 for Not
+ready**, or **2 for invalid input / Git or storage errors**. It never updates
+evidence or approval records. Missing review fails even when `gaps` is empty.
+See [CI integration and GitHub Actions](../docs/vad-ci.md) for automatic tests,
+the manual/reusable readiness workflow, diagnostics, and PR integration.
+
 High/Critical changes can be recorded and reported but cannot be approved in this
 MVP. Residual-risk exceptions and deployment approval are not supported.
 

@@ -1,0 +1,51 @@
+name: VAD readiness
+
+on:
+  workflow_dispatch:
+    inputs:
+      change_id:
+        description: Existing VAD change ID in the selected revision
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      change_id:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    env:
+      CHANGE_ID: ${{ inputs.change_id }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.13'
+      - name: Check VAD readiness
+        run: |
+          mkdir -p "$RUNNER_TEMP/vad-ci"
+          python3 tools/vad.py check -- "$CHANGE_ID" | tee "$RUNNER_TEMP/vad-ci/check.json"
+      - name: Export report even if not ready
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/vad-ci"
+          python3 tools/vad.py report -- "$CHANGE_ID" > "$RUNNER_TEMP/vad-ci/report.md"
+      - name: Preserve diagnostics
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: vad-report
+          path: ${{ runner.temp }}/vad-ci/
+          retention-days: 7

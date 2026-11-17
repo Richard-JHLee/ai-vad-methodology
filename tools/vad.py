@@ -219,7 +219,7 @@ def parser():
     approve.add_argument("--reviewer", required=True)
     approve.add_argument("--attest-human-review", action="store_true", required=True,
                          help="Declare that the named human reviewed the current plan and evidence")
-    for name in ("status", "report"):
+    for name in ("status", "report", "check"):
         command = commands.add_parser(name)
         command.add_argument("id")
     return cli
@@ -231,11 +231,13 @@ def execute(args):
     if args.command == "plan" and args.file is None:
         print(json.dumps(load(path)["plan"], ensure_ascii=False, indent=2))
         return
-    if args.command in ("status", "report"):
+    if args.command in ("status", "report", "check"):
         document = load(path)
         state = status(document, context(root, document["plan"]))
-        if args.command == "status":
+        if args.command in ("status", "check"):
             print(json.dumps(state, ensure_ascii=False, indent=2))
+            if args.command == "check":
+                return 0 if state["decision"] == "Ready" else 1
         else:
             print("# VAD merge verification report\n")
             print("Decision: " + state["decision"])
@@ -297,12 +299,12 @@ def execute(args):
 
 
 def main():
+    args = parser().parse_args()
     try:
-        execute(parser().parse_args())
+        return execute(args) or 0
     except (OSError, ValueError) as error:
         print("vad: " + str(error), file=sys.stderr)
-        return 1
-    return 0
+        return 2 if args.command == "check" else 1
 
 
 if __name__ == "__main__":

@@ -1,0 +1,12 @@
+{
+  "decision": "Not ready",
+  "gate": "merge",
+  "context": "b4c36ea58972b83e82ac3db100484448e2259f9e9b32fd187a2c32332fdfe6a1",
+  "gaps": [
+    "regression: stale evidence; record verification for the current source and plan",
+    "plan-import: stale evidence; record verification for the current source and plan",
+    "docs: stale evidence; record verification for the current source and plan"
+  ],
+  "human_review_recorded": false,
+  "note": "Self-reported records, not authenticated identity or proof of correctness"
+}

@@ -44,6 +44,8 @@ and open a pull request against `main`.
 For changes to the [local CLI](./tools/README.md), run
 `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v`.
 The tests exercise the CLI in temporary Git repositories without external packages.
+GitHub Actions also runs them on Python 3.9 and 3.13 for PRs and `main` pushes.
+For the separate VAD readiness gate, see [CI integration](./docs/vad-ci.md).
 
 ## License
 

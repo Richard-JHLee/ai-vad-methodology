@@ -107,7 +107,7 @@ VAD 기록 쓰기만 직렬화하며 다른 편집기를 잠그지 않는다.
    검증 추가 후 재승인, 저장 경로·잠금·손상 데이터 보호.
 5. 실제 저장소에서 도움말·안전한 조회와 문서 링크를 확인한 뒤 GitHub에 커밋·푸시.
 
-공개 명령: `init`, `plan`, `record`, `status`, `approve`, `report`.
+공개 명령: `init`, `plan`, `record`, `status`, `check`, `approve`, `report`.
 설치 없는 실행: `python3 tools/vad.py --help`.
 테스트: `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v`.
 
@@ -145,3 +145,10 @@ VAD 기록 쓰기만 직렬화하며 다른 편집기를 잠그지 않는다.
 `plan` 명령은 기존 형식을 바꾸지 않고 계획만 검증해 교체하며 이력을 보존한다.
 위의 18개 결과는 최초 MVP의 검증 기록이며, 후속 변경의 실행 결과는 사례와 연결된
 실제 로그를 확인한다. 사람의 승인은 에이전트가 대신 기록하지 않는다.
+
+## 8. CI 연동
+
+`check`는 기존 상태 판단을 읽기 전용으로 재사용하고 준비 완료/미완료/실행 오류를
+종료 코드 0/1/2로 전달한다. GitHub Actions에는 자동 CLI 회귀 테스트와 변경 ID를
+지정하는 수동·재사용 VAD 게이트를 추가한다. 아키텍처, 영향 분석, 수용 기준,
+실행 방법과 한계는 [CI 개발 계획 및 안내](./vad-ci.md)를 따른다.

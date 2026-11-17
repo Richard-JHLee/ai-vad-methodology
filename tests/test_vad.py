@@ -73,6 +73,71 @@ class VadCLI(unittest.TestCase):
     def state(self):
         return json.loads(self.cli("status", "demo").stdout)
 
+    def test_check_requires_current_human_review_and_does_not_write(self):
+        self.prepare()
+        self.cli("check", "demo", code=1)
+        self.record()
+        self.assertFalse(json.loads(self.cli("check", "demo", code=1).stdout)["human_review_recorded"])
+        self.approve()
+        before = self.path.read_bytes()
+        self.assertEqual(json.loads(self.cli("check", "demo").stdout), self.state())
+        self.assertEqual(self.path.read_bytes(), before)
+        self.assertFalse((self.root / ".vad" / ".lock").exists())
+        self.record()
+        self.cli("check", "demo", code=1)
+        self.cli("status", "demo")
+
+    def test_check_returns_policy_failure_for_result_gaps_and_high_risk(self):
+        self.prepare()
+        for result in vad.STATES:
+            with self.subTest(result=result):
+                self.record(result)
+                if result in ("Pass", "N/A"):
+                    self.approve()
+                state = json.loads(self.cli("check", "demo", code=0 if result in ("Pass", "N/A") else 1).stdout)
+                self.assertEqual(state["decision"], "Ready" if result in ("Pass", "N/A") else "Not ready")
+        for risk in ("High", "Critical"):
+            document = self.read()
+            document["plan"]["risk"] = risk
+            self.write(document)
+            self.record()
+            self.cli("check", "demo", code=1)
+
+    def test_check_rejects_stale_source_and_plan(self):
+        self.prepare()
+        self.record()
+        self.approve()
+        (self.root / "app.py").write_text("answer = 43\n")
+        self.cli("check", "demo", code=1)
+        self.record()
+        self.approve()
+        document = self.read()
+        document["plan"]["environment"] += " changed"
+        self.write(document)
+        self.cli("check", "demo", code=1)
+
+    def test_check_distinguishes_input_errors_from_not_ready(self):
+        self.cli("check", "missing", code=2)
+        self.cli("check", "--", "--help", code=2)
+        self.cli("check", "../outside", code=2)
+        self.cli("init", "demo", "--title", "Draft", "--owner", "Developer")
+        self.cli("check", "demo", code=1)
+        self.path.write_text("broken JSON")
+        self.cli("check", "demo", code=2)
+        self.assertEqual(self.path.read_text(), "broken JSON")
+
+    def test_check_rejects_storage_symlinks_and_unresolved_git_state(self):
+        self.prepare()
+        target = self.path.parent / "original.json"
+        self.path.rename(target)
+        self.path.symlink_to(target)
+        self.cli("check", "demo", code=2)
+        self.path.unlink()
+        target.rename(self.path)
+        head = self.git("rev-parse", "HEAD").stdout.strip().decode()
+        self.git("update-index", "--add", "--cacheinfo", "160000," + head + ",module")
+        self.cli("check", "demo", code=2)
+
     def test_plan_export_reads_draft_without_modifying_record(self):
         self.cli("init", "demo", "--title", "Draft", "--owner", "Developer")
         before = self.path.read_bytes()
