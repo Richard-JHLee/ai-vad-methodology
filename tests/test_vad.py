@@ -73,6 +73,81 @@ class VadCLI(unittest.TestCase):
     def state(self):
         return json.loads(self.cli("status", "demo").stdout)
 
+    def test_plan_export_reads_draft_without_modifying_record(self):
+        self.cli("init", "demo", "--title", "Draft", "--owner", "Developer")
+        before = self.path.read_bytes()
+        plan = json.loads(self.cli("plan", "demo").stdout)
+        self.assertEqual(plan, self.read()["plan"])
+        self.assertNotIn("results", plan)
+        self.assertEqual(self.path.read_bytes(), before)
+
+    def test_plan_import_completes_draft_and_preserves_existing_history(self):
+        self.prepare()
+        self.record()
+        self.approve()
+        original = self.read()
+        plan_file = self.root / ".vad" / "input-plan.json"
+        plan = original["plan"]
+        plan["purpose"] = "Updated requirement"
+        plan_file.write_text(json.dumps(plan))
+        self.cli("plan", "demo", "--file", str(plan_file))
+        imported = self.read()
+        self.assertEqual(imported["plan"], plan)
+        self.assertEqual(imported["results"], original["results"])
+        self.assertEqual(imported["approvals"], original["approvals"])
+        self.assertFalse(self.state()["human_review_recorded"])
+        self.assertIn("stale evidence", " ".join(self.state()["gaps"]))
+        self.record()
+        self.approve()
+        self.assertEqual(self.state()["decision"], "Ready")
+        self.cli("init", "draft", "--title", "Draft", "--owner", "Developer")
+        self.cli("plan", "draft", "--file", str(plan_file))
+        draft = json.loads((self.path.parent / "draft.json").read_text())
+        self.assertEqual(draft["plan"], plan)
+        self.assertEqual(draft["results"], [])
+        self.assertEqual(draft["approvals"], [])
+
+    def test_identical_plan_import_preserves_current_approval(self):
+        self.prepare()
+        self.record()
+        self.approve()
+        plan_file = self.root / ".vad" / "input-plan.json"
+        plan_file.write_text(self.cli("plan", "demo").stdout)
+        before = self.state()
+        self.cli("plan", "demo", "--file", str(plan_file))
+        self.assertEqual(self.state(), before)
+
+    def test_invalid_plan_imports_preserve_record_bytes(self):
+        self.prepare()
+        self.record()
+        self.approve()
+        original = self.path.read_bytes()
+        plan_file = self.root / ".vad" / "input-plan.json"
+        for content in ("bad JSON", "[]", "null", "42", "{}", json.dumps(self.read())):
+            with self.subTest(content=content):
+                plan_file.write_text(content)
+                self.cli("plan", "demo", "--file", str(plan_file), code=1)
+                self.assertEqual(self.path.read_bytes(), original)
+        self.cli("plan", "demo", "--file", str(plan_file.parent / "missing.json"), code=1)
+        self.assertEqual(self.path.read_bytes(), original)
+
+    def test_plan_import_respects_writer_lock_and_storage_symlinks(self):
+        self.prepare()
+        plan_file = self.root / ".vad" / "input-plan.json"
+        plan_file.write_text(json.dumps(self.read()["plan"]))
+        original = self.path.read_bytes()
+        lock = self.root / ".vad" / ".lock"
+        lock.mkdir()
+        self.cli("plan", "demo", "--file", str(plan_file), code=1)
+        self.assertEqual(self.path.read_bytes(), original)
+        lock.rmdir()
+        target = self.path.parent / "original.json"
+        self.path.rename(target)
+        self.path.symlink_to(target)
+        self.cli("plan", "demo", "--file", str(plan_file), code=1)
+        self.cli("plan", "demo", code=1)
+        self.assertEqual(target.read_bytes(), original)
+
     def test_draft_duplicate_and_no_data_loss(self):
         self.cli("init", "demo", "--title", "Draft", "--owner", "Developer")
         before = self.path.read_bytes()

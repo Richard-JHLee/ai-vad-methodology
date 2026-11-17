@@ -1,0 +1,1 @@
+PASS: Python 3.9 syntax parsing (runtime not tested); 27 Markdown files; 103 local links; fenced blocks; documented plan JSON; git diff --check.

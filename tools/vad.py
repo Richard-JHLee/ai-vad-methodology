@@ -205,6 +205,9 @@ def parser():
     init.add_argument("--title", required=True)
     init.add_argument("--owner", required=True)
     init.add_argument("--risk", choices=RISKS, default="Medium")
+    plan = commands.add_parser("plan", help="Export a plan, or import a validated plan without replacing history")
+    plan.add_argument("id")
+    plan.add_argument("--file", help="UTF-8 JSON file containing only the replacement plan object")
     record = commands.add_parser("record", help="Record a manually executed check or explain a gap")
     record.add_argument("id")
     record.add_argument("--check", required=True)
@@ -225,6 +228,9 @@ def parser():
 def execute(args):
     root = Path(os.fsdecode(git(Path(args.repo), "rev-parse", "--show-toplevel")).strip()).resolve()
     directory, changes, path = paths(root, args.id)
+    if args.command == "plan" and args.file is None:
+        print(json.dumps(load(path)["plan"], ensure_ascii=False, indent=2))
+        return
     if args.command in ("status", "report"):
         document = load(path)
         state = status(document, context(root, document["plan"]))
@@ -252,6 +258,15 @@ def execute(args):
                 "purpose": "", "environment": "", "recovery": "",
                 "impact": {"paths": "", "data": "", "permissions": "", "regression": ""},
                 "criteria": {}, "checks": {}}, "results": [], "approvals": []}
+        elif args.command == "plan":
+            document = load(path)
+            replacement = json.loads(Path(args.file).read_text(encoding="utf-8"))
+            if not isinstance(replacement, dict):
+                raise ValueError("Replacement plan must be a JSON object")
+            errors = plan_errors(replacement)
+            if errors:
+                raise ValueError("; ".join(errors))
+            document["plan"] = replacement
         else:
             document = load(path)
             errors = plan_errors(document["plan"])

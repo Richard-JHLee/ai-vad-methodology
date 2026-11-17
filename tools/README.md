@@ -13,10 +13,13 @@ Run the commands from this repository; `--repo` can point to another Git reposit
 ```sh
 python3 tools/vad.py --help
 python3 tools/vad.py init limit-items --title "Bound item queries" --owner "Developer" --risk Medium
+python3 tools/vad.py plan limit-items > .vad/limit-items-plan.json
 ```
 
-Edit **only the `plan` object** in `.vad/changes/limit-items.json`. The draft has
-empty fields deliberately: an incomplete plan cannot be approved. For example:
+Edit `.vad/limit-items-plan.json`, then import it with `plan --file` as shown below.
+This file contains only the plan; you do not need to edit the change record's
+results or approvals. The draft has empty fields deliberately: an incomplete plan
+cannot be imported or approved. Exporting an incomplete draft is supported. For example:
 
 ```json
 {
@@ -51,10 +54,20 @@ empty fields deliberately: an incomplete plan cannot be approved. For example:
 }
 ```
 
-Replace the example with your actual requirement, callers, checks, environment,
-and recovery plan. Keep `schema_version`, `results`, and `approvals` outside the
-plan unchanged. Every criterion needs a check, and all listed checks are required.
+Replace the exported plan with your actual requirement, callers, checks, environment,
+and recovery plan. The input must be the plan object, not a whole change record.
+Every criterion needs a check, and all listed checks are required.
 If a category is outside scope, explain why in its impact field instead of leaving it blank.
+
+```sh
+python3 tools/vad.py plan limit-items --file .vad/limit-items-plan.json
+```
+
+Import validates the replacement before atomically updating only the plan. Existing
+results and approvals are retained; changed plans make them stale. Importing an
+identical plan preserves their validity. Missing files, malformed or incomplete
+plans, locked storage, and unsafe storage paths fail without changing the record.
+`plan ID` exports JSON without writing or requiring a complete draft.
 
 Perform the planned checks yourself, then record what happened. The CLI does
 **not** run tests or independently verify your assertions. For an unavailable
@@ -106,7 +119,9 @@ Submodules and unresolved merge conflicts are rejected. Ignored files, resolved
 symlink target contents, installed dependencies, and external services are not
 automatically fingerprinted. Update the environment description after relevant
 external changes. Keep the source stable while running checks and recording them.
-Do not put product code or requirements under `.vad/`.
+Do not put product code or external requirement documents under `.vad/`.
+Managed plans and their import/export files belong there; the plan in the change
+record participates in freshness checks, while an unused import file does not.
 
 Storage uses an exclusive writer lock and atomic file replacement. If interrupted,
 confirm no VAD writer is active before manually removing a leftover `.vad/.lock`
@@ -127,3 +142,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
 Tests use disposable repositories and invoke the real CLI. They cover result
 states, stale evidence, review invalidation, missing coverage, input validation,
 history preservation, storage-path restrictions, locking, and write failure.
+
+For one actual use of this tool on its own repository, including the initial
+failure, the improvement, and preserved evidence, see
+[safe plan import case study (Korean)](../examples/cli-plan-import/README.md).

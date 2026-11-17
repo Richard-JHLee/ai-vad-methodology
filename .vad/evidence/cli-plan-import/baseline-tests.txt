@@ -1,0 +1,12 @@
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v -k draft -k invalid_plan -k source_and_plan -k complete_flow -k record_symlink
+Exit: 0
+test_complete_flow_requires_human_review_and_preserves_history (test_vad.VadCLI.test_complete_flow_requires_human_review_and_preserves_history) ... ok
+test_draft_duplicate_and_no_data_loss (test_vad.VadCLI.test_draft_duplicate_and_no_data_loss) ... ok
+test_invalid_plan_shapes_fail_closed (test_vad.VadCLI.test_invalid_plan_shapes_fail_closed) ... ok
+test_record_symlink_and_existing_lock_preserve_data (test_vad.VadCLI.test_record_symlink_and_existing_lock_preserve_data) ... ok
+test_source_and_plan_changes_invalidate_results (test_vad.VadCLI.test_source_and_plan_changes_invalidate_results) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 5.981s
+
+OK

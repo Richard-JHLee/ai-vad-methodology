@@ -1,0 +1,4 @@
+Command: python3 tools/vad.py plan cli-plan-import
+Exit: 2
+usage: vad.py [-h] [--repo REPO] {init,record,approve,status,report} ...
+vad.py: error: argument command: invalid choice: 'plan' (choose from init, record, approve, status, report)

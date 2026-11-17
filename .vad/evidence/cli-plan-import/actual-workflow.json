@@ -1,0 +1,29 @@
+{
+  "case": "Actual cli-plan-import change in this repository",
+  "commands": [
+    "plan cli-plan-import",
+    "plan cli-plan-import --file .vad/cli-plan-import-plan.json",
+    "plan cli-plan-import --file .vad/evidence/cli-plan-import/invalid-plan.json"
+  ],
+  "context_after_source_change": {
+    "decision": "Not ready",
+    "gate": "merge",
+    "context": "51bda65dae687d95afd3624bd17fe965df93a0d6e4ff81ef36a68c8239b2b944",
+    "gaps": [
+      "regression: stale evidence; record verification for the current source and plan",
+      "plan-import: stale evidence; record verification for the current source and plan",
+      "docs: Not run (no recorded result)"
+    ],
+    "human_review_recorded": false,
+    "note": "Self-reported records, not authenticated identity or proof of correctness"
+  },
+  "export_matches_plan": true,
+  "identical_import_preserves_context_and_history": true,
+  "changed_environment_changes_context": true,
+  "restored_plan_preserves_original_history": true,
+  "invalid_import_exit": 1,
+  "invalid_import_error": "vad: Replacement plan must be a JSON object",
+  "invalid_import_preserves_original_bytes": true,
+  "actual_human_approvals": 0,
+  "note": "Approval invalidation with an existing approval was tested only in disposable repositories, not by impersonating a real reviewer."
+}
