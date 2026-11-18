@@ -73,6 +73,43 @@ class VadCLI(unittest.TestCase):
     def state(self):
         return json.loads(self.cli("status", "demo").stdout)
 
+    def test_ci_selection_validates_explicit_id_without_writing(self):
+        self.assertEqual(vad.selected_change_id(self.root, "demo"), "demo")
+        self.assertFalse((self.root / ".vad").exists())
+        for value in ("../outside", "demo\nOTHER=value", "--help", "x" * 81):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                vad.selected_change_id(self.root, value)
+
+    def test_ci_selection_reads_pointer_and_rejects_invalid_values(self):
+        directory = self.root / ".vad"
+        directory.mkdir()
+        selection = directory / "ci-change-id"
+        selection.write_text("demo\n")
+        self.assertEqual(vad.selected_change_id(self.root), "demo")
+        self.assertEqual(selection.read_text(), "demo\n")
+        self.assertEqual(vad.selected_change_id(self.root, "other"), "other")
+        for value in ("", "demo\nother", "../outside", "--help"):
+            selection.write_text(value)
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                vad.selected_change_id(self.root)
+
+    def test_ci_selection_rejects_missing_file_and_symlinks(self):
+        with self.assertRaises(FileNotFoundError):
+            vad.selected_change_id(self.root)
+        directory = self.root / ".vad"
+        directory.mkdir()
+        source = directory / "real-selection"
+        source.write_text("demo\n")
+        selection = directory / "ci-change-id"
+        selection.symlink_to(source)
+        with self.assertRaises(ValueError):
+            vad.selected_change_id(self.root)
+        selection.unlink()
+        directory.rename(self.root / "records")
+        directory.symlink_to(self.root / "records", target_is_directory=True)
+        with self.assertRaises(ValueError):
+            vad.selected_change_id(self.root)
+
     def test_check_requires_current_human_review_and_does_not_write(self):
         self.prepare()
         self.cli("check", "demo", code=1)

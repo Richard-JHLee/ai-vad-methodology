@@ -1,0 +1,12 @@
+{
+  "classic_protection": null,
+  "observed_classic_api_status": 404,
+  "existing_rulesets": [
+    {
+      "id": 19657365,
+      "name": "Richard-JHLee",
+      "enforcement": "disabled",
+      "changed": false
+    }
+  ]
+}

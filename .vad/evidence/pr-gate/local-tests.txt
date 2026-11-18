@@ -1,0 +1,40 @@
+Command: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -v
+Exit: 0
+test_all_result_states (test_vad.VadCLI.test_all_result_states) ... ok
+test_atomic_replace_failure_preserves_original_and_cleans_temporary (test_vad.VadCLI.test_atomic_replace_failure_preserves_original_and_cleans_temporary) ... ok
+test_blank_reasons_and_missing_attestation_are_rejected (test_vad.VadCLI.test_blank_reasons_and_missing_attestation_are_rejected) ... ok
+test_changes_directory_symlink_is_rejected (test_vad.VadCLI.test_changes_directory_symlink_is_rejected) ... ok
+test_check_distinguishes_input_errors_from_not_ready (test_vad.VadCLI.test_check_distinguishes_input_errors_from_not_ready) ... ok
+test_check_rejects_stale_source_and_plan (test_vad.VadCLI.test_check_rejects_stale_source_and_plan) ... ok
+test_check_rejects_storage_symlinks_and_unresolved_git_state (test_vad.VadCLI.test_check_rejects_storage_symlinks_and_unresolved_git_state) ... ok
+test_check_requires_current_human_review_and_does_not_write (test_vad.VadCLI.test_check_requires_current_human_review_and_does_not_write) ... ok
+test_check_returns_policy_failure_for_result_gaps_and_high_risk (test_vad.VadCLI.test_check_returns_policy_failure_for_result_gaps_and_high_risk) ... ok
+test_ci_selection_reads_pointer_and_rejects_invalid_values (test_vad.VadCLI.test_ci_selection_reads_pointer_and_rejects_invalid_values) ... ok
+test_ci_selection_rejects_missing_file_and_symlinks (test_vad.VadCLI.test_ci_selection_rejects_missing_file_and_symlinks) ... ok
+test_ci_selection_validates_explicit_id_without_writing (test_vad.VadCLI.test_ci_selection_validates_explicit_id_without_writing) ... ok
+test_complete_flow_requires_human_review_and_preserves_history (test_vad.VadCLI.test_complete_flow_requires_human_review_and_preserves_history) ... ok
+test_corrupt_and_unsupported_data_fail_without_overwriting (test_vad.VadCLI.test_corrupt_and_unsupported_data_fail_without_overwriting) ... ok
+test_draft_duplicate_and_no_data_loss (test_vad.VadCLI.test_draft_duplicate_and_no_data_loss) ... ok
+test_high_and_critical_are_recordable_but_not_approvable (test_vad.VadCLI.test_high_and_critical_are_recordable_but_not_approvable) ... ok
+test_identical_plan_import_preserves_current_approval (test_vad.VadCLI.test_identical_plan_import_preserves_current_approval) ... ok
+test_invalid_plan_imports_preserve_record_bytes (test_vad.VadCLI.test_invalid_plan_imports_preserve_record_bytes) ... ok
+test_invalid_plan_shapes_fail_closed (test_vad.VadCLI.test_invalid_plan_shapes_fail_closed) ... ok
+test_non_git_repository_and_missing_record_fail_cleanly (test_vad.VadCLI.test_non_git_repository_and_missing_record_fail_cleanly) ... ok
+test_plan_export_reads_draft_without_modifying_record (test_vad.VadCLI.test_plan_export_reads_draft_without_modifying_record) ... ok
+test_plan_import_completes_draft_and_preserves_existing_history (test_vad.VadCLI.test_plan_import_completes_draft_and_preserves_existing_history) ... ok
+test_plan_import_respects_writer_lock_and_storage_symlinks (test_vad.VadCLI.test_plan_import_respects_writer_lock_and_storage_symlinks) ... ok
+test_record_symlink_and_existing_lock_preserve_data (test_vad.VadCLI.test_record_symlink_and_existing_lock_preserve_data) ... ok
+test_report_does_not_interpret_user_markdown (test_vad.VadCLI.test_report_does_not_interpret_user_markdown) ... ok
+test_report_explains_review_wait_and_stale_evidence_without_writing (test_vad.VadCLI.test_report_explains_review_wait_and_stale_evidence_without_writing) ... ok
+test_report_lists_draft_errors_and_keeps_untrusted_gaps_inert (test_vad.VadCLI.test_report_lists_draft_errors_and_keeps_untrusted_gaps_inert) ... ok
+test_required_coverage_and_known_check_validation (test_vad.VadCLI.test_required_coverage_and_known_check_validation) ... ok
+test_same_source_commit_and_vad_reports_do_not_invalidate_evidence (test_vad.VadCLI.test_same_source_commit_and_vad_reports_do_not_invalidate_evidence) ... ok
+test_source_and_plan_changes_invalidate_results (test_vad.VadCLI.test_source_and_plan_changes_invalidate_results) ... ok
+test_storage_path_traversal_and_symlinks_are_rejected (test_vad.VadCLI.test_storage_path_traversal_and_symlinks_are_rejected) ... ok
+test_submodule_and_merge_conflicts_are_rejected (test_vad.VadCLI.test_submodule_and_merge_conflicts_are_rejected) ... ok
+test_untracked_files_deletions_and_executable_bit_change_context (test_vad.VadCLI.test_untracked_files_deletions_and_executable_bit_change_context) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 26.396s
+
+OK

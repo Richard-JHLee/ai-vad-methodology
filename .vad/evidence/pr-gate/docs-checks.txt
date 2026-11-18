@@ -1,0 +1,1 @@
+PASS: YAML and Python 3.9 syntax checked; 32 Markdown files and 110 local links checked; actual selection step rejects newline injection; protection readback and PR BLOCKED state match intended policy.

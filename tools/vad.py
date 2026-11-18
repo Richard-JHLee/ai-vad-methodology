@@ -75,6 +75,18 @@ def paths(root, change_id):
     return directory, changes, record
 
 
+def selected_change_id(root, requested=""):
+    if requested:
+        paths(root, requested)
+        return requested
+    selection = root / ".vad" / "ci-change-id"
+    if selection.parent.is_symlink() or selection.is_symlink():
+        raise ValueError("VAD CI selection must not use symbolic links")
+    change_id = selection.read_text(encoding="utf-8").strip()
+    paths(root, change_id)
+    return change_id
+
+
 @contextmanager
 def locked(directory):
     directory.mkdir(exist_ok=True)
