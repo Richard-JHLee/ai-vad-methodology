@@ -1,7 +1,9 @@
 name: VAD readiness
-run-name: VAD gate / ${{ inputs.change_id }}
+run-name: VAD / ${{ github.event_name }} / ${{ github.event.pull_request.number || inputs.change_id }}
 
 on:
+  pull_request:
+    branches: [main]
   workflow_dispatch:
     inputs:
       change_id:
@@ -11,21 +13,23 @@ on:
   workflow_call:
     inputs:
       change_id:
-        required: true
+        required: false
         type: string
+        default: ''
 
 permissions:
   contents: read
 
 jobs:
   readiness:
+    name: ${{ github.event_name == 'pull_request' && 'VAD PR gate' || 'VAD readiness' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     defaults:
       run:
         shell: bash
     env:
-      CHANGE_ID: ${{ inputs.change_id }}
+      REQUESTED_CHANGE_ID: ${{ inputs.change_id }}
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -34,12 +38,27 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: '3.13'
+      - name: Select and validate the VAD change
+        id: change
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os
+          from tools.vad import selected_change_id
+          change_id = selected_change_id(Path.cwd(), os.environ['REQUESTED_CHANGE_ID'])
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write(f'change_id={change_id}\n')
+          PY
       - name: Check VAD readiness
+        env:
+          CHANGE_ID: ${{ steps.change.outputs.change_id }}
         run: |
           mkdir -p "$RUNNER_TEMP/vad-ci"
           python3 tools/vad.py check -- "$CHANGE_ID" | tee "$RUNNER_TEMP/vad-ci/check.json"
       - name: Publish reasons and next steps even if not ready
         if: always()
+        env:
+          CHANGE_ID: ${{ steps.change.outputs.change_id }}
         run: |
           mkdir -p "$RUNNER_TEMP/vad-ci"
           python3 tools/vad.py report -- "$CHANGE_ID" | tee "$RUNNER_TEMP/vad-ci/report.md" >> "$GITHUB_STEP_SUMMARY"
