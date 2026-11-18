@@ -1,6 +1,6 @@
 # VAD merge verification report
 
-Decision: Not ready
+Decision: Ready
 
 Self-reported evidence and review; no production readiness claim.
 
@@ -10,21 +10,21 @@ All planned checks have current passing or N/A records.
 
 ## Human review
 
-Pending: no approval record matches the current source, plan and results.
+Current approval record present.
 
 ## Next steps
 
-After verification, a responsible human must review the plan and evidence before recording approval. Do not fabricate or automatically grant approval.
+Ready for the merge gate only; deployment readiness requires separate verification.
 
 ## Full record
 
     {
       "status": {
-        "decision": "Not ready",
+        "decision": "Ready",
         "gate": "merge",
         "context": "367346c967bb9b6586e885ece4405e0f4334558fc46f1519f972db8da0b91474",
         "gaps": [],
-        "human_review_recorded": false,
+        "human_review_recorded": true,
         "note": "Self-reported records, not authenticated identity or proof of correctness"
       },
       "record": {
@@ -128,6 +128,14 @@ After verification, a responsible human must review the plan and evidence before
             "head": "20ee1ad63043d2a5d478a82b342c17a13f711df0"
           }
         ],
-        "approvals": []
+        "approvals": [
+          {
+            "reviewer": "Richard Lee",
+            "context": "367346c967bb9b6586e885ece4405e0f4334558fc46f1519f972db8da0b91474",
+            "results_digest": "c8db5d7e3430bb37f591d04f74357d8a8335a9f770f5bf4fd4b9553d6f599580",
+            "time": "2026-11-18T03:05:45.567672+00:00",
+            "gate": "merge"
+          }
+        ]
       }
     }
