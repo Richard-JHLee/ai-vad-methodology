@@ -1,0 +1,13 @@
+{
+  "decision": "Not ready",
+  "gate": "merge",
+  "context": "367346c967bb9b6586e885ece4405e0f4334558fc46f1519f972db8da0b91474",
+  "gaps": [
+    "regression: Not run (no recorded result)",
+    "docs: Not run (no recorded result)",
+    "pr-blocking: Not run (no recorded result)",
+    "protection: Not run (no recorded result)"
+  ],
+  "human_review_recorded": false,
+  "note": "Self-reported records, not authenticated identity or proof of correctness"
+}

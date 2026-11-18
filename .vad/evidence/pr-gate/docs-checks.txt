@@ -1,1 +1,1 @@
-PASS: workflow YAML; Python 3.9 syntax; 30 Markdown files; 110 local links; fenced blocks; git diff --check; actual selection step selects pointer and rejects newline output injection before writing.
+PASS: YAML and Python 3.9 syntax checked; 32 Markdown files and 110 local links checked; actual selection step rejects newline injection; protection readback and PR BLOCKED state match intended policy.

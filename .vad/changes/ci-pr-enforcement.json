@@ -61,6 +61,43 @@
       "approval": "New change awaits explicit human review; prior Richard Lee approval is not reused."
     }
   },
-  "results": [],
+  "results": [
+    {
+      "check": "regression",
+      "state": "Pass",
+      "observed": "33 local CLI tests passed and both Python 3.9/3.13 jobs succeeded on actual PR #5.",
+      "evidence": ".vad/evidence/pr-gate/local-tests.txt; .vad/evidence/pr-gate/pr-ci-success.json",
+      "context": "367346c967bb9b6586e885ece4405e0f4334558fc46f1519f972db8da0b91474",
+      "time": "2026-11-18T02:53:55.677329+00:00",
+      "head": "20ee1ad63043d2a5d478a82b342c17a13f711df0"
+    },
+    {
+      "check": "docs",
+      "state": "Pass",
+      "observed": "PASS: YAML and Python 3.9 syntax checked; 32 Markdown files and 110 local links checked; actual selection step rejects newline injection; protection readback and PR BLOCKED state match intended policy.",
+      "evidence": ".vad/evidence/pr-gate/docs-checks.txt; .vad/evidence/pr-gate/protection-before.json",
+      "context": "367346c967bb9b6586e885ece4405e0f4334558fc46f1519f972db8da0b91474",
+      "time": "2026-11-18T02:53:55.828924+00:00",
+      "head": "20ee1ad63043d2a5d478a82b342c17a13f711df0"
+    },
+    {
+      "check": "pr-blocking",
+      "state": "Pass",
+      "observed": "Actual pull_request run selected ci-pr-enforcement, matched the local source context, refused missing verification/approval and uploaded its report.",
+      "evidence": ".vad/evidence/pr-gate/negative-run/check.json; .vad/evidence/pr-gate/negative-run/report.md",
+      "context": "367346c967bb9b6586e885ece4405e0f4334558fc46f1519f972db8da0b91474",
+      "time": "2026-11-18T02:53:55.982752+00:00",
+      "head": "20ee1ad63043d2a5d478a82b342c17a13f711df0"
+    },
+    {
+      "check": "protection",
+      "state": "Pass",
+      "observed": "Main protection readback confirms all three GitHub Actions App-bound checks, strict base, administrator enforcement, PR requirement and blocked PR #5 while VAD fails.",
+      "evidence": ".vad/evidence/pr-gate/protection-readback.json; .vad/evidence/pr-gate/protected-pr-blocked.json",
+      "context": "367346c967bb9b6586e885ece4405e0f4334558fc46f1519f972db8da0b91474",
+      "time": "2026-11-18T02:53:56.136296+00:00",
+      "head": "20ee1ad63043d2a5d478a82b342c17a13f711df0"
+    }
+  ],
   "approvals": []
 }
