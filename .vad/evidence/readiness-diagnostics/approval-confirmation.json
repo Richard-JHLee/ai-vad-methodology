@@ -1,0 +1,9 @@
+{
+  "reviewer": "Richard Lee",
+  "confirmation": "User explicitly supplied this reviewer name in reply to the request to review the linked investigation and verification reports and authorize the approval record.",
+  "reviewed_source_commit": "b4c87724eff0fe26f5d391caea4472e0582f3693",
+  "context": "80969c5749fab545b56fe78b1456c883b16f9049d5a268e9ec278866e15f29f8",
+  "approval_time": "2026-11-18T02:33:21.831128+00:00",
+  "gate": "merge",
+  "identity_assurance": "Explicit chat confirmation; not an authenticated GitHub PR review or a cryptographic signature."
+}
