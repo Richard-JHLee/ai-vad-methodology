@@ -1,0 +1,8 @@
+{
+  "executed": "actual report step extracted from .github/workflows/vad-check.yml",
+  "exit": 0,
+  "artifact_equals_job_summary": true,
+  "untrusted_report_not_written_to_workflow_stdout": true,
+  "summary_explains_pending_human_review": true,
+  "real_change_still_blocked": true
+}

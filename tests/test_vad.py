@@ -384,6 +384,40 @@ class VadCLI(unittest.TestCase):
         self.assertIn("Decision: Not ready", report)
         self.assertTrue(all(line.startswith("    ") for line in report.splitlines() if "<script>" in line))
 
+    def test_report_explains_review_wait_and_stale_evidence_without_writing(self):
+        self.prepare()
+        self.record()
+        before = self.path.read_bytes()
+        report = self.cli("report", "demo").stdout
+        self.assertIn("All planned checks have current", report)
+        self.assertIn("Pending: no approval record", report)
+        self.assertIn("responsible human must review", report)
+        self.assertIn("## Next steps", report)
+        self.assertEqual(self.path.read_bytes(), before)
+        self.approve()
+        report = self.cli("report", "demo").stdout
+        self.assertIn("Current approval record present.", report)
+        self.assertNotIn("Pending: no approval record", report)
+        self.assertIn("Ready for the merge gate only", report)
+        (self.root / "app.py").write_text("answer = 43\n")
+        report = self.cli("report", "demo").stdout
+        self.assertIn("stale evidence", report)
+        self.assertIn("Pending: no approval record", report)
+        self.assertIn("rerun affected checks", report)
+        self.cli("check", "demo", code=1)
+
+    def test_report_lists_draft_errors_and_keeps_untrusted_gaps_inert(self):
+        self.cli("init", "demo", "--title", "Draft", "--owner", "Developer")
+        before = self.path.read_bytes()
+        report = self.cli("report", "demo").stdout
+        self.assertIn("plan.purpose is required", report)
+        self.assertEqual(self.path.read_bytes(), before)
+        document = self.read()
+        document["plan"]["criteria"] = {"<script>bad</script>\n::error::injected": "Expected"}
+        self.write(document)
+        report = self.cli("report", "demo").stdout
+        self.assertTrue(all(line.startswith("    ") for line in report.splitlines() if "<script>" in line or "::error::injected" in line))
+
     def test_submodule_and_merge_conflicts_are_rejected(self):
         self.prepare()
         head = self.git("rev-parse", "HEAD").stdout.strip().decode()

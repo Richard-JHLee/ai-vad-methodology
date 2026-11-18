@@ -1,0 +1,1 @@
+PASS: both workflow YAML files; Python 3.9 syntax; 30 Markdown files; 110 local links; fenced blocks; documented plan JSON; git diff --check.

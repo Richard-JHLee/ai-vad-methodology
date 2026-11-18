@@ -242,6 +242,23 @@ def execute(args):
             print("# VAD merge verification report\n")
             print("Decision: " + state["decision"])
             print("\nSelf-reported evidence and review; no production readiness claim.\n")
+            print("## Verification\n")
+            if state["gaps"]:
+                for gap in state["gaps"]:
+                    print("    " + json.dumps(gap, ensure_ascii=False))
+            else:
+                print("All planned checks have current passing or N/A records.")
+            print("\n## Human review\n")
+            print("Current approval record present." if state["human_review_recorded"]
+                  else "Pending: no approval record matches the current source, plan and results.")
+            print("\n## Next steps\n")
+            if state["gaps"]:
+                print("Resolve the listed gaps, rerun affected checks, and record actual results for the current source and plan.")
+            if not state["human_review_recorded"]:
+                print("After verification, a responsible human must review the plan and evidence before recording approval. Do not fabricate or automatically grant approval.")
+            if state["decision"] == "Ready":
+                print("Ready for the merge gate only; deployment readiness requires separate verification.")
+            print("\n## Full record\n")
             # Indented JSON keeps user-entered Markdown/HTML inert in the report.
             print("\n".join("    " + line for line in json.dumps(
                 {"status": state, "record": document}, ensure_ascii=False, indent=2).splitlines()))

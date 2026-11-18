@@ -100,6 +100,33 @@
       "context": "51bda65dae687d95afd3624bd17fe965df93a0d6e4ff81ef36a68c8239b2b944",
       "time": "2026-11-17T07:34:20.935707+00:00",
       "head": "c11bfc94a2c60b392055165fb387cd3cbd4fcbcb"
+    },
+    {
+      "check": "regression",
+      "state": "Pass",
+      "observed": "All 30 CLI tests passed, including current report diagnostics and all existing CLI regression checks.",
+      "evidence": ".vad/evidence/readiness-diagnostics/tests.txt",
+      "context": "80969c5749fab545b56fe78b1456c883b16f9049d5a268e9ec278866e15f29f8",
+      "time": "2026-11-18T02:29:23.465235+00:00",
+      "head": "3041c2ed9f05005a97c01ecb8f07f987f818e37d"
+    },
+    {
+      "check": "plan-import",
+      "state": "Pass",
+      "observed": "Actual plan export, identical validated import and invalid import rejection passed without changing evidence/approval history.",
+      "evidence": ".vad/evidence/readiness-diagnostics/actual-plan-checks.json",
+      "context": "80969c5749fab545b56fe78b1456c883b16f9049d5a268e9ec278866e15f29f8",
+      "time": "2026-11-18T02:29:23.621182+00:00",
+      "head": "3041c2ed9f05005a97c01ecb8f07f987f818e37d"
+    },
+    {
+      "check": "docs",
+      "state": "Pass",
+      "observed": "PASS: both workflow YAML files; Python 3.9 syntax; 30 Markdown files; 110 local links; fenced blocks; documented plan JSON; git diff --check.",
+      "evidence": ".vad/evidence/readiness-diagnostics/docs-checks.txt",
+      "context": "80969c5749fab545b56fe78b1456c883b16f9049d5a268e9ec278866e15f29f8",
+      "time": "2026-11-18T02:29:23.771852+00:00",
+      "head": "3041c2ed9f05005a97c01ecb8f07f987f818e37d"
     }
   ],
   "approvals": []

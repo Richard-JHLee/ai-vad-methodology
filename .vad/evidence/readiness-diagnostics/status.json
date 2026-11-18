@@ -1,0 +1,8 @@
+{
+  "decision": "Not ready",
+  "gate": "merge",
+  "context": "80969c5749fab545b56fe78b1456c883b16f9049d5a268e9ec278866e15f29f8",
+  "gaps": [],
+  "human_review_recorded": false,
+  "note": "Self-reported records, not authenticated identity or proof of correctness"
+}

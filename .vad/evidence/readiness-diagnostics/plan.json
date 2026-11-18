@@ -1,0 +1,55 @@
+{
+  "title": "Safe plan export and import from actual VAD CLI use",
+  "owner": "Repository maintainer; human review pending",
+  "risk": "Medium",
+  "purpose": "Avoid editing results and approvals when a developer creates or updates a VAD plan.",
+  "environment": "macOS; Python 3.13.2; Git 2.50.1; local repository and disposable test repositories; no external services.",
+  "recovery": "Revert tools/vad.py and its docs/tests; retain existing schema_version 1 records and all results/approvals. No schema migration.",
+  "impact": {
+    "paths": "CLI parser -> execute -> existing paths/load/plan_errors/locked/save. New plan export/import only; record/status/approve/report remain callers of existing validation and storage.",
+    "data": "Replace only the plan object on validated input. Preserve schema_version, accumulated results and approvals; rejected imports leave bytes unchanged.",
+    "permissions": "No network, test execution, new credentials or authenticated identities. Existing ID, storage symlink and writer-lock checks apply.",
+    "regression": "Existing draft refusal, source/plan freshness, approval invalidation, storage error handling and all public commands remain valid."
+  },
+  "criteria": {
+    "AC-1": "plan ID prints only the current plan as valid JSON, including an unfinished draft, without writing storage.",
+    "AC-2": "plan ID --file FILE validates and replaces only the plan, preserving evidence and approval history.",
+    "AC-3": "Invalid JSON, wrong shapes, incomplete plans, missing files, lock conflicts and unsafe storage paths fail without modifying the original record.",
+    "AC-4": "Changed plan invalidates prior results and approval; identical import retains validity; blocked results can be corrected by later records.",
+    "AC-5": "Existing CLI behavior and documented usage remain consistent; human approval of this actual change is left pending."
+  },
+  "checks": {
+    "regression": {
+      "criteria": [
+        "AC-4",
+        "AC-5"
+      ],
+      "procedure": "Run targeted existing CLI tests on baseline, then the complete CLI test module after command dispatch changes. Preserve both logs.",
+      "expected": "Baseline targeted tests and final regression suite pass; no fabricated real human approval."
+    },
+    "plan-import": {
+      "criteria": [
+        "AC-1",
+        "AC-2",
+        "AC-3",
+        "AC-4"
+      ],
+      "procedure": "Reproduce the absent plan command before implementation; run new command-level tests after implementation; export/import this actual plan; check rejected-import preservation and current status.",
+      "expected": "New command succeeds; malformed imports preserve original bytes; plan-only changes preserve history and invalidate old context."
+    },
+    "docs": {
+      "criteria": [
+        "AC-5"
+      ],
+      "procedure": "Validate local Markdown links, fenced blocks, example JSON and git diff --check; inspect actual-case report.",
+      "expected": "All local links and documented JSON resolve; no whitespace errors; actual case remains Not ready without human approval."
+    }
+  },
+  "agent_execution": {
+    "initiating_human": "User requested one actual application case and CLI improvements in this chat",
+    "agent": "Codex; model identifier not recorded",
+    "tools": "Python, Git, local shell, VAD CLI",
+    "accountable_owner": "Repository maintainer; human review pending",
+    "approval": "No human verification approval has been recorded."
+  }
+}

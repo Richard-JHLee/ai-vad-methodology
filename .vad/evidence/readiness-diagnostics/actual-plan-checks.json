@@ -1,0 +1,19 @@
+{
+  "plan_export_and_identical_import": "Pass",
+  "invalid_plan_rejected_with_exit": 1,
+  "record_bytes_preserved": true,
+  "history_preserved": true,
+  "real_human_approvals": 0,
+  "prior_status": {
+    "decision": "Not ready",
+    "gate": "merge",
+    "context": "80969c5749fab545b56fe78b1456c883b16f9049d5a268e9ec278866e15f29f8",
+    "gaps": [
+      "regression: stale evidence; record verification for the current source and plan",
+      "plan-import: stale evidence; record verification for the current source and plan",
+      "docs: stale evidence; record verification for the current source and plan"
+    ],
+    "human_review_recorded": false,
+    "note": "Self-reported records, not authenticated identity or proof of correctness"
+  }
+}
